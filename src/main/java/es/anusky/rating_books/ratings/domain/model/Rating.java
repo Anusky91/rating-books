@@ -19,4 +19,8 @@ public class Rating {
     private final RatingScore score;
     private final RatingComment comment;
     private final LocalDate date;
+
+    public static Rating create(Long bookId, UserId userId, RatingScore score, RatingComment comment, LocalDate date) {
+        return new Rating(null, bookId, userId, score, comment, date);
+    }
 }

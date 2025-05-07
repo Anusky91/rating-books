@@ -1,17 +1,21 @@
-package es.anusky.rating_books.ratings.infrastucture.mapper;
+package es.anusky.rating_books.ratings.infrastructure.mapper;
 
+import es.anusky.rating_books.books.infrastucture.persistence.BookEntity;
 import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingComment;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingId;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingScore;
 import es.anusky.rating_books.ratings.domain.valueobjects.UserId;
-import es.anusky.rating_books.ratings.infrastucture.persistence.RatingEntity;
+import es.anusky.rating_books.ratings.infrastructure.persistence.RatingEntity;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class RatingMapper {
-    public static RatingEntity toEntity(Rating rating) {
+
+    public RatingEntity toEntity(Rating rating, BookEntity bookEntity) {
         return RatingEntity.builder()
                 .id(rating.getId() != null ? rating.getId().getValue() : null)
-                .bookId(rating.getBookId())
+                .book(bookEntity)
                 .userId(rating.getUserId().getValue())
                 .score(rating.getScore().getValue())
                 .comment(rating.getComment().getValue())
@@ -19,9 +23,9 @@ public class RatingMapper {
                 .build();
     }
 
-    public static Rating toDomain(RatingEntity entity) {
+    public Rating toDomain(RatingEntity entity) {
         return new Rating(new RatingId(entity.getId()),
-                entity.getBookId(),
+                entity.getBook().getId(),
                 new UserId(entity.getUserId()),
                 new RatingScore(entity.getScore()),
                 new RatingComment(entity.getComment()),

@@ -19,8 +19,7 @@ public class RatingService {
     private final RatingRepository ratingRepository;
 
     public Rating create(Long bookId, Long userId, int score, String comment) {
-        Rating rating = new Rating(null,
-                bookId,
+        Rating rating = Rating.create(bookId,
                 new UserId(userId),
                 new RatingScore(score),
                 new RatingComment(comment),
