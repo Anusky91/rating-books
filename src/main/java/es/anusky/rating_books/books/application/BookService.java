@@ -7,10 +7,12 @@ import es.anusky.rating_books.books.domain.valueobjects.Editorial;
 import es.anusky.rating_books.books.domain.valueobjects.Isbn;
 import es.anusky.rating_books.books.domain.valueobjects.Title;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
