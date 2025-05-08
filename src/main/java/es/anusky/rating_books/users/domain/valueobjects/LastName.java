@@ -1,8 +1,11 @@
 package es.anusky.rating_books.users.domain.valueobjects;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
 public class LastName implements Serializable {
 
     private final String value;

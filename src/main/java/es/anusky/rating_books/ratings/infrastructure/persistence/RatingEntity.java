@@ -1,6 +1,7 @@
 package es.anusky.rating_books.ratings.infrastructure.persistence;
 
 import es.anusky.rating_books.books.infrastucture.persistence.BookEntity;
+import es.anusky.rating_books.users.infrastructure.persistence.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,9 @@ public class RatingEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_id", nullable = false)
     private BookEntity book;
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
     private int score;
     private String comment;
     private LocalDate date;

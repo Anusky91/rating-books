@@ -4,6 +4,7 @@ import es.anusky.rating_books.books.infrastucture.persistence.SpringDataBookRepo
 import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.repository.RatingRepository;
 import es.anusky.rating_books.ratings.infrastructure.mapper.RatingMapper;
+import es.anusky.rating_books.users.infrastructure.persistence.SpringDataUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,7 @@ public class RatingRepositoryImpl implements RatingRepository {
     private final SpringDataRatingRepository springDataRatingRepository;
     private final RatingMapper mapper;
     private final SpringDataBookRepository bookRepository;
+    private final SpringDataUserRepository userRepository;
 
     @Override
     public Optional<Rating> findById(Long id) {
@@ -29,7 +31,10 @@ public class RatingRepositoryImpl implements RatingRepository {
         var bookEntity = bookRepository.findById(rating.getBookId()).orElseThrow(
                 () -> new NoSuchElementException("Book not found with ID: " + rating.getBookId())
         );
-        var entity = mapper.toEntity(rating, bookEntity);
+        var userEntity = userRepository.findById(rating.getUserId().getValue()).orElseThrow(
+                () -> new NoSuchElementException("User not found with ID: " + rating.getUserId().getValue())
+        );
+        var entity = mapper.toEntity(rating, bookEntity, userEntity);
         var saved = springDataRatingRepository.save(entity);
         return mapper.toDomain(saved);
     }
