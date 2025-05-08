@@ -1,10 +1,11 @@
 package es.anusky.rating_books.ratings.infrastructure.controller;
 
+import es.anusky.rating_books.infrastructure.exception.RatingNotFoundException;
 import es.anusky.rating_books.ratings.application.RatingService;
 import es.anusky.rating_books.ratings.domain.model.Rating;
+import es.anusky.rating_books.shared.infrastructure.responses.RatingResponse;
 import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,24 +17,26 @@ public class RatingController {
     private final RatingService ratingService;
 
     @PostMapping
-    public ResponseEntity<Rating> save(@RequestBody CreateRatingRequest request) {
+    public RatingResponse save(@RequestBody CreateRatingRequest request) {
         Rating created = ratingService.create(request.bookId(),
                 request.userId(),
                 request.score(),
                 request.comment());
-        return ResponseEntity.ok(created);
+        return RatingResponse.from(created);
     }
 
     @GetMapping
-    public List<Rating> findAll() {
-        return ratingService.findAll();
+    public List<RatingResponse> findAll() {
+        return ratingService.findAll().stream().map(RatingResponse::from).toList();
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Rating> findById(@PathVariable Long id) {
+    private RatingResponse findById(@PathVariable Long id) {
         return ratingService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(RatingResponse::from)
+                .orElseThrow(
+                        () -> new RatingNotFoundException("Rating with ID " + id + " not found")
+                );
     }
 
     public record CreateRatingRequest(@NotNull Long bookId,

@@ -2,12 +2,13 @@ package es.anusky.rating_books.books.infrastucture.controller;
 
 import es.anusky.rating_books.books.application.BookService;
 import es.anusky.rating_books.books.domain.model.Book;
+import es.anusky.rating_books.infrastructure.exception.BookNotFoundException;
+import es.anusky.rating_books.shared.infrastructure.responses.BookResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,26 +20,28 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public ResponseEntity<Book> create(@RequestBody @Valid CreateBookRequest request) {
+    public BookResponse create(@RequestBody @Valid CreateBookRequest request) {
         Book created = bookService.createBook(
                 request.title(),
                 request.author(),
                 request.editorial(),
                 request.isbn()
         );
-        return ResponseEntity.ok(created);
+        return BookResponse.from(created);
     }
 
     @GetMapping
-    public List<Book> findAll() {
-        return bookService.findAll();
+    public List<BookResponse> findAll() {
+        return bookService.findAll().stream().map(BookResponse::from).toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findById(@PathVariable Long id) {
+    public BookResponse findById(@PathVariable Long id) {
         return bookService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(BookResponse::from)
+                .orElseThrow(
+                        () -> new BookNotFoundException("Book with ID " + id + " not found")
+                );
     }
 
     public record CreateBookRequest(
