@@ -4,7 +4,7 @@ import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.repository.RatingRepository;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingComment;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingScore;
-import es.anusky.rating_books.ratings.domain.valueobjects.UserId;
+import es.anusky.rating_books.shared.domain.valueobjects.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@ package es.anusky.rating_books.ratings.domain.model;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingComment;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingId;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingScore;
-import es.anusky.rating_books.ratings.domain.valueobjects.UserId;
+import es.anusky.rating_books.shared.domain.valueobjects.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
