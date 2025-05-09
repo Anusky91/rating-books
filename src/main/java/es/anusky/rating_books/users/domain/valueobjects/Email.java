@@ -13,7 +13,7 @@ public class Email implements Serializable {
             throw new IllegalArgumentException("El email es obligatorio");
         }
         if (!checkValidEmail(value)) {
-            throw new IllegalArgumentException("Formato del email invalido");
+            throw new IllegalArgumentException("Formato del email (" + value + ") invalido");
         }
         value = value.trim();
         if (value.length() > 320) {

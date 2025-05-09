@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +30,6 @@ class BookControllerTest extends IntegrationTestCase {
 
     @Test
     @Sql(scripts = "/sql-scripts/books-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/sql-scripts/clean-tables.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void test_get_findAll() throws Exception {
         Set<String> expectedTitles = Set.of("El nombre del viento", "1984", "Fahrenheit 451", "La sombra del viento", "Cien años de soledad");
         MvcResult result = mockMvc.perform(createRequestGet()).andExpect(status().isOk()).andReturn();
@@ -44,11 +42,23 @@ class BookControllerTest extends IntegrationTestCase {
     }
 
     @Test
-    @Sql(scripts = "/sql-scripts/books-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/sql-scripts/clean-tables.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void test_get_findById_NotFound() throws Exception {
+        Book book = BookMother.random();
+        bookRepository.save(book);
         MvcResult result = mockMvc.perform(createRequestGetById()).andExpect(status().is4xxClientError()).andReturn();
         assertTrue(result.getResponse().getContentAsString().contains("Book with ID 999 not found"));
+    }
+
+    @Test
+    void test_get_findById_shouldReturnBook() throws Exception {
+        Book book = BookMother.random();
+        bookRepository.save(book);
+        MvcResult result = mockMvc.perform(get("/books/1").accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        BookResponse bookResponse = objectMapper.readValue(result.getResponse().getContentAsString(), BookResponse.class);
+        assertEquals(1, bookResponse.id());
     }
 
     private MockHttpServletRequestBuilder createRequestPost() throws JsonProcessingException {

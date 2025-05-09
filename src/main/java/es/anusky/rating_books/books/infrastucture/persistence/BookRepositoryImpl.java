@@ -35,4 +35,9 @@ public class BookRepositoryImpl implements BookRepository {
                 .map(BookMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteAll() {
+        springDataBookRepository.deleteAll();
+    }
 }

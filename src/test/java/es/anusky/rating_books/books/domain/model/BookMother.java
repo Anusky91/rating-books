@@ -15,11 +15,4 @@ public class BookMother {
                 IsbnMother.random());
     }
 
-    public static Book withId(Long id) {
-        return new Book(null,
-                new Title(faker.book().title()),
-                new Author(faker.book().author()),
-                new Editorial(faker.book().publisher()),
-                IsbnMother.random());
-    }
 }
