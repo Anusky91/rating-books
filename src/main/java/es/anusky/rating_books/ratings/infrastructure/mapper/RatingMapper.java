@@ -9,8 +9,10 @@ import es.anusky.rating_books.shared.domain.valueobjects.UserId;
 import es.anusky.rating_books.ratings.infrastructure.persistence.RatingEntity;
 import es.anusky.rating_books.users.infrastructure.persistence.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class RatingMapper {
 
     public RatingEntity toEntity(Rating rating, BookEntity bookEntity, UserEntity userEntity) {

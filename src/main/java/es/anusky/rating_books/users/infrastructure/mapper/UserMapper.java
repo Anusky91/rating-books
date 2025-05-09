@@ -5,7 +5,9 @@ import es.anusky.rating_books.shared.domain.valueobjects.UserId;
 import es.anusky.rating_books.users.domain.model.User;
 import es.anusky.rating_books.users.domain.valueobjects.*;
 import es.anusky.rating_books.users.infrastructure.persistence.UserEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper {
 
     public User toDomain(UserEntity entity) {
