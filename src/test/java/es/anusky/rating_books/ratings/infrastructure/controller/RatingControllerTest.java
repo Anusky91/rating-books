@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.model.BookMother;
 import es.anusky.rating_books.infrastructure.IntegrationTestCase;
+import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.model.RatingMother;
 import es.anusky.rating_books.shared.infrastructure.responses.RatingResponse;
 import es.anusky.rating_books.users.domain.model.User;
@@ -52,7 +53,11 @@ class RatingControllerTest extends IntegrationTestCase {
         for (int i = 0; i < 10 ; i++) {
             ratingRepository.save(RatingMother.with(book, user));
         }
-        MvcResult result = mockMvc.perform(get("/ratings/6")).andExpect(status().isOk()).andReturn();
+        Rating saved = ratingRepository.save(RatingMother.with(book, user));
+
+        MvcResult result = mockMvc.perform(get("/ratings/" + saved.getId().getValue()))
+                .andExpect(status().isOk()).andReturn();
+
         RatingResponse response = objectMapper.readValue(result.getResponse().getContentAsByteArray(), RatingResponse.class);
 
         assertNotNull(response);
@@ -61,7 +66,9 @@ class RatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_rating_NotFound() throws Exception {
-        mockMvc.perform(get("/ratings/999")).andExpect(status().isNotFound()).andReturn();
+        MvcResult result = mockMvc.perform(get("/ratings/999")).andExpect(status().isNotFound()).andReturn();
+
+        assertTrue(result.getResponse().getContentAsString().contains("Rating with ID 999 not found"));
     }
 
     private String postBody() throws JsonProcessingException {
