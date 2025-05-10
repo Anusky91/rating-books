@@ -8,7 +8,8 @@ public class EmailMother {
 
     public static Email random() {
         String email = faker.name().username() + "@" + faker.pokemon().name() + ".com";
-        return new Email(email);
+        String emailSinEspacios = email.replaceAll("\\s+", "");
+        return new Email(emailSinEspacios);
     }
 
 }
