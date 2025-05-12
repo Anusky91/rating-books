@@ -78,6 +78,24 @@ class RatingControllerTest extends IntegrationTestCase {
         assertTrue(result.getResponse().getContentAsString().contains("Book with ID 999 doesn't exist"));
     }
 
+    @Test
+    void test_rating_already_exists() throws Exception {
+        User user = userRepository.save(UserMother.random());
+        Book book = bookRepository.save(BookMother.random());
+        Rating rating = ratingRepository.save(RatingMother.with(book, user));
+
+        RatingController.CreateRatingRequest request = new RatingController.CreateRatingRequest(rating.getBookId(),
+                rating.getUserId().getValue(),
+                3,
+                "Cualquie cosa vale.");
+
+        MvcResult result = mockMvc.perform(post("/ratings").content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isConflict()).andReturn();
+
+        assertTrue(result.getResponse().getContentAsString().contains("Already exists a rating for the this book"));
+    }
+
     private String postBody() throws JsonProcessingException {
         Book book = bookRepository.save(BookMother.random());
         User user = userRepository.save(UserMother.random());

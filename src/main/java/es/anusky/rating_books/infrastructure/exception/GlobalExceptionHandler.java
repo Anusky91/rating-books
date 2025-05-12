@@ -37,6 +37,13 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(HttpStatus.NOT_FOUND.toString(), e.getMessage());
     }
 
+    @ExceptionHandler(BookAlreadyRatedByUserException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleBookAlreadyRatedByUserException(BookAlreadyRatedByUserException e) {
+        log.error("Wrong request: ", e);
+        return new ErrorResponse(HttpStatus.CONFLICT.toString(), e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleGenericException(Exception e) {
