@@ -27,4 +27,8 @@ public class Rating {
                                 LocalDate date) {
         return new Rating(null, bookId, userId, score, comment, date);
     }
+
+    public Rating update(int score, String comment) {
+        return new Rating(this.id, this.bookId, this.userId, new RatingScore(score), new RatingComment(comment), LocalDate.now());
+    }
 }
