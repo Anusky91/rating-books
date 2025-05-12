@@ -1,4 +1,9 @@
 spring:
+  application:
+    name: BookStar
+  mvc:
+    servlet:
+      path: /bookstar
   datasource:
     url: jdbc:h2:mem:bookstar_testdb
     driverClassName: org.h2.Driver
