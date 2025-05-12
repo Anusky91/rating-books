@@ -11,4 +11,6 @@ public interface RatingRepository {
     Rating save(Rating rating);
 
     List<Rating> findAll();
+
+    List<Rating> findByBookId(Long bookId);
 }

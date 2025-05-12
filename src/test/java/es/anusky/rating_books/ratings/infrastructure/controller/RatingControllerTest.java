@@ -71,6 +71,13 @@ class RatingControllerTest extends IntegrationTestCase {
         assertTrue(result.getResponse().getContentAsString().contains("Rating with ID 999 not found"));
     }
 
+    @Test
+    void test_rating_byBook_NotFound() throws Exception {
+        MvcResult result = mockMvc.perform(get("/ratings/book/999")).andExpect(status().isNotFound()).andReturn();
+
+        assertTrue(result.getResponse().getContentAsString().contains("Book with ID 999 doesn't exist"));
+    }
+
     private String postBody() throws JsonProcessingException {
         Book book = bookRepository.save(BookMother.random());
         User user = userRepository.save(UserMother.random());

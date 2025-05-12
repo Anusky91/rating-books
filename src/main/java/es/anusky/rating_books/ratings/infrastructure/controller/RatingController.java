@@ -39,6 +39,14 @@ public class RatingController {
                 );
     }
 
+    @GetMapping("/book/{bookId}")
+    public List<RatingResponse> findByBookId(@PathVariable Long bookId) {
+        return ratingService.findByBookId(bookId)
+                .stream()
+                .map(RatingResponse::from)
+                .toList();
+    }
+
     public record CreateRatingRequest(@NotNull Long bookId,
                                       @NotNull Long userId,
                                       @Min(1) @Max(5) int score,

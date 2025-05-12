@@ -40,4 +40,9 @@ public class BookRepositoryImpl implements BookRepository {
     public void deleteAll() {
         springDataBookRepository.deleteAll();
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return springDataBookRepository.existsById(id);
+    }
 }

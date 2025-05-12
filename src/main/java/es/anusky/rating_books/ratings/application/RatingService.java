@@ -1,5 +1,7 @@
 package es.anusky.rating_books.ratings.application;
 
+import es.anusky.rating_books.books.domain.repository.BookRepository;
+import es.anusky.rating_books.infrastructure.exception.BookNotFoundException;
 import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.repository.RatingRepository;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingComment;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class RatingService {
 
     private final RatingRepository ratingRepository;
+    private final BookRepository bookRepository;
 
     public Rating create(Long bookId, Long userId, int score, String comment) {
         Rating rating = Rating.create(bookId,
@@ -33,5 +36,12 @@ public class RatingService {
 
     public List<Rating> findAll() {
         return ratingRepository.findAll();
+    }
+
+    public List<Rating> findByBookId(Long bookId) {
+        if (!bookRepository.existsById(bookId)) {
+            throw new BookNotFoundException("Book with ID " + bookId + " doesn't exist");
+        }
+        return ratingRepository.findByBookId(bookId);
     }
 }

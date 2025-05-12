@@ -46,4 +46,12 @@ public class RatingRepositoryImpl implements RatingRepository {
                 .map(mapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public List<Rating> findByBookId(Long bookId) {
+        return springDataRatingRepository.findByBookId(bookId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
 }
