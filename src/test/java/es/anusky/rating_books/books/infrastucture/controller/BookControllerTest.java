@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,6 +60,37 @@ class BookControllerTest extends IntegrationTestCase {
 
         BookResponse bookResponse = objectMapper.readValue(result.getResponse().getContentAsString(), BookResponse.class);
         assertEquals(1, bookResponse.id());
+    }
+
+    @Test
+    void test_get_search() throws Exception {
+        Book book = BookMother.random();
+        bookRepository.save(book);
+        MvcResult result = mockMvc.perform(get("/books/search?query=" + book.getTitle().getValue()))
+                .andExpect(status().isOk())
+                .andReturn();
+        BookResponse[] responses = objectMapper.readValue(result.getResponse().getContentAsByteArray(), BookResponse[].class);
+        assertThat(responses.length).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    void test_get_search_exception() throws Exception {
+        Book book = BookMother.random();
+        bookRepository.save(book);
+        MvcResult result = mockMvc.perform(get("/books/search?query=z"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        assertThat(result.getResponse().getContentAsString()).contains("Query must have at least 3 characters");
+    }
+
+    @Test
+    void test_get_search_empty_list() throws Exception {
+        Book book = BookMother.random();
+        bookRepository.save(book);
+        MvcResult result = mockMvc.perform(get("/books/search?query=zzzzzzz"))
+                .andExpect(status().isOk())
+                .andReturn();
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("[]");
     }
 
     private MockHttpServletRequestBuilder createRequestPost() throws JsonProcessingException {

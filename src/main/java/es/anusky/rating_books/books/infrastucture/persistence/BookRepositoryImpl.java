@@ -45,4 +45,12 @@ public class BookRepositoryImpl implements BookRepository {
     public boolean existsById(Long id) {
         return springDataBookRepository.existsById(id);
     }
+
+    @Override
+    public List<Book> findByTitleOrAuthor(String query) {
+        return springDataBookRepository.findByTitleIgnoreCaseContainingOrAuthorIgnoreCaseContaining(query, query)
+                .stream()
+                .map(BookMapper::toDomain)
+                .toList();
+    }
 }

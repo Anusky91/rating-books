@@ -1,6 +1,7 @@
 package es.anusky.rating_books.books.infrastucture.controller;
 
 import es.anusky.rating_books.books.application.BookService;
+import es.anusky.rating_books.books.application.search.SearchBookService;
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.infrastructure.exception.BookNotFoundException;
 import es.anusky.rating_books.shared.infrastructure.responses.BookResponse;
@@ -17,7 +18,9 @@ import java.util.List;
 @RequestMapping("/books")
 @RequiredArgsConstructor
 public class BookController {
+
     private final BookService bookService;
+    private final SearchBookService searchBookService;
 
     @PostMapping
     public BookResponse create(@RequestBody @Valid CreateBookRequest request) {
@@ -42,6 +45,14 @@ public class BookController {
                 .orElseThrow(
                         () -> new BookNotFoundException("Book with ID " + id + " not found")
                 );
+    }
+
+    @GetMapping("/search")
+    public List<BookResponse> search(@RequestParam String query) {
+        return searchBookService.search(query)
+                .stream()
+                .map(BookResponse::from)
+                .toList();
     }
 
     public record CreateBookRequest(

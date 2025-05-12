@@ -11,4 +11,5 @@ public interface BookRepository {
     List<Book> findAll();
     void deleteAll();
     boolean existsById(Long id);
+    List<Book> findByTitleOrAuthor(String query);
 }
