@@ -2,8 +2,6 @@ package es.anusky.rating_books.users.domain.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
-
 public enum Role implements GrantedAuthority {
     USER,
     ADMIN;

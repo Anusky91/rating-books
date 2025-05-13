@@ -1,5 +1,6 @@
 package es.anusky.rating_books.users.infrastructure.security;
 
+import es.anusky.rating_books.users.domain.model.Role;
 import es.anusky.rating_books.users.infrastructure.persistence.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,8 +17,15 @@ public class BookStarUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole().getAuthority()));
+        if (user.getRole() == Role.ADMIN) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER") // ← ¡aquí está la clave!
+            );
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
+
 
     @Override
     public String getPassword() {
@@ -26,7 +34,7 @@ public class BookStarUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getAlias();
     }
 
     @Override
@@ -36,7 +44,7 @@ public class BookStarUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !user.isLocked();
+        return true;
     }
 
     @Override
@@ -46,6 +54,6 @@ public class BookStarUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnable();
+        return true;
     }
 }
