@@ -27,6 +27,7 @@ class UpdateRatingControllerTest extends IntegrationTestCase {
         UpdateRatingController.UpdateRatingRequest request = getUpdateRatingRequest();
 
         MvcResult result = mockMvc.perform(put("/ratings/update/" + actualRating.getId().getValue())
+                        .header("Authorization", basicAuth())
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -47,6 +48,7 @@ class UpdateRatingControllerTest extends IntegrationTestCase {
     @Test
     void test_update_controller_exception() throws Exception {
         MvcResult result = mockMvc.perform(put("/ratings/update/" + 999)
+                        .header("Authorization", basicAuth())
                         .content(objectMapper.writeValueAsString(getUpdateRatingRequest()))
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE))

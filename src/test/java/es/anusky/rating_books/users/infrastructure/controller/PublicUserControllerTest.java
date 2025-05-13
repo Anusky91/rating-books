@@ -30,8 +30,10 @@ class PublicUserControllerTest extends IntegrationTestCase {
     }
 
     private MockHttpServletRequestBuilder createRequestPost(User user) throws JsonProcessingException {
-        return post("/public/users").contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(createPostBodyRequest(user)).accept(MediaType.APPLICATION_JSON_VALUE);
+        return post("/public/users").header("Authorization", basicAuth())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(createPostBodyRequest(user))
+                .accept(MediaType.APPLICATION_JSON_VALUE);
     }
 
     private String createPostBodyRequest(User user) throws JsonProcessingException {

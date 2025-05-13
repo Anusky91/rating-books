@@ -25,9 +25,11 @@ class RatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_post_controller() throws Exception {
-        MvcResult result = mockMvc.perform(post("/ratings").content(postBody())
-                                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                        .accept(MediaType.APPLICATION_JSON_VALUE))
+        MvcResult result = mockMvc.perform(post("/ratings")
+                        .header("Authorization", basicAuth())
+                        .content(postBody())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk()).andReturn();
 
         assertNotNull(result.getResponse().getContentAsString());
@@ -37,10 +39,12 @@ class RatingControllerTest extends IntegrationTestCase {
     void test_findAll() throws Exception {
         Book book = bookRepository.save(BookMother.random());
         User user = userRepository.save(UserMother.random());
-        for (int i = 0; i < 10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             ratingRepository.save(RatingMother.with(book, user));
         }
-        MvcResult result = mockMvc.perform(get("/ratings")).andExpect(status().isOk()).andReturn();
+        MvcResult result = mockMvc.perform(get("/ratings").header("Authorization", basicAuth()))
+                .andExpect(status().isOk())
+                .andReturn();
         RatingResponse[] responses = objectMapper.readValue(result.getResponse().getContentAsByteArray(), RatingResponse[].class);
 
         assertThat(responses.length).isGreaterThanOrEqualTo(10);
@@ -50,12 +54,12 @@ class RatingControllerTest extends IntegrationTestCase {
     void test_findById() throws Exception {
         Book book = bookRepository.save(BookMother.random());
         User user = userRepository.save(UserMother.random());
-        for (int i = 0; i < 10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             ratingRepository.save(RatingMother.with(book, user));
         }
         Rating saved = ratingRepository.save(RatingMother.with(book, user));
 
-        MvcResult result = mockMvc.perform(get("/ratings/" + saved.getId().getValue()))
+        MvcResult result = mockMvc.perform(get("/ratings/" + saved.getId().getValue()).header("Authorization", basicAuth()))
                 .andExpect(status().isOk()).andReturn();
 
         RatingResponse response = objectMapper.readValue(result.getResponse().getContentAsByteArray(), RatingResponse.class);
@@ -66,14 +70,18 @@ class RatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_rating_NotFound() throws Exception {
-        MvcResult result = mockMvc.perform(get("/ratings/999")).andExpect(status().isNotFound()).andReturn();
+        MvcResult result = mockMvc.perform(get("/ratings/999").header("Authorization", basicAuth()))
+                .andExpect(status().isNotFound())
+                .andReturn();
 
         assertTrue(result.getResponse().getContentAsString().contains("Rating with ID 999 not found"));
     }
 
     @Test
     void test_rating_byBook_NotFound() throws Exception {
-        MvcResult result = mockMvc.perform(get("/ratings/book/999")).andExpect(status().isNotFound()).andReturn();
+        MvcResult result = mockMvc.perform(get("/ratings/book/999").header("Authorization", basicAuth()))
+                .andExpect(status().isNotFound())
+                .andReturn();
 
         assertTrue(result.getResponse().getContentAsString().contains("Book with ID 999 doesn't exist"));
     }
@@ -89,7 +97,9 @@ class RatingControllerTest extends IntegrationTestCase {
                 3,
                 "Cualquie cosa vale.");
 
-        MvcResult result = mockMvc.perform(post("/ratings").content(objectMapper.writeValueAsString(request))
+        MvcResult result = mockMvc.perform(post("/ratings")
+                .header("Authorization", basicAuth())
+                .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isConflict()).andReturn();
 
@@ -100,9 +110,9 @@ class RatingControllerTest extends IntegrationTestCase {
         Book book = bookRepository.save(BookMother.random());
         User user = userRepository.save(UserMother.random());
         RatingController.CreateRatingRequest request = new RatingController.CreateRatingRequest(book.getId().getValue(),
-                                                                    user.getUserId().getValue(),
-                                                                    3,
-                                                                    "El mejor libro de autoayuda que he leido.");
+                user.getUserId().getValue(),
+                3,
+                "El mejor libro de autoayuda que he leido.");
         return objectMapper.writeValueAsString(request);
     }
 
