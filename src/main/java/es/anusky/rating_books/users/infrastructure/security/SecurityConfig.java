@@ -11,14 +11,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -28,45 +26,35 @@ public class SecurityConfig {
     private final SpringDataUserRepository userRepository;
 
     @Bean
-    public UserDetailsService userDetailsService(SpringDataUserRepository userRepository) {
-        return new CustomUserDetailsService(userRepository);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        System.out.println("🧠 Buscando usuario por alias");
+        return alias -> userRepository.findByAlias(alias)
+                .map(user -> org.springframework.security.core.userdetails.User
+                        .withUsername(user.getAlias())
+                        .password(user.getPassword())
+                        .roles(user.getRole().name())
+                        .build())
+                .orElseThrow(() -> new UsernameNotFoundException("Alias not found: " + alias));
     }
 
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable())
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/public/**", "/h2-console/**").permitAll()
-                        .requestMatchers("/bookstar/admin/**").hasRole("ADMIN") // asegúrate de esto
                         .anyRequest().authenticated()
                 )
-                .userDetailsService(userDetailsService(userRepository));
-
+                .httpBasic(withDefaults());
         return http.build();
     }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // Ajusta según tu front
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true); // si vas a usar cookies o auth básica
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
-
-
-    @Bean
-    public PasswordEncoder encode() {
-        return new BCryptPasswordEncoder();
-    }
-
 }
