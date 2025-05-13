@@ -8,9 +8,22 @@ import java.util.Objects;
 @Getter
 public class Password implements Serializable {
     private final String value;
-    public Password(String raw) {
+
+    public Password(String value) {
+        value = validate(value);
+        this.value = value;
+    }
+
+    public Password(String value, boolean isHashed) {
+        if (!isHashed) {
+            value = validate(value);
+        }
+        this.value = value;
+    }
+
+    private String validate(String raw) {
         raw = raw.trim();
-        if (raw == null || raw.length() < 8) {
+        if (raw.length() < 8) {
             throw new IllegalArgumentException("Debe tener al menos 8 caracteres");
         }
         if (!raw.matches(".*[a-z].*")) {
@@ -25,7 +38,11 @@ public class Password implements Serializable {
         if (!raw.matches(".*[^a-zA-Z0-9].*")) {
             throw new IllegalArgumentException("Debe tener al menos un carácter especial");
         }
-        this.value = raw; // ⚠️ solo si se va a codificar antes de persistir
+        return raw;
+    }
+
+    public static Password fromEncoded(String hash) {
+        return new Password(hash, true);
     }
 
     @Override
