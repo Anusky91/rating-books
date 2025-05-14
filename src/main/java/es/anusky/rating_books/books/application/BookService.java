@@ -2,10 +2,8 @@ package es.anusky.rating_books.books.application;
 
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.repository.BookRepository;
-import es.anusky.rating_books.books.domain.valueobjects.Author;
-import es.anusky.rating_books.books.domain.valueobjects.Editorial;
-import es.anusky.rating_books.books.domain.valueobjects.Isbn;
-import es.anusky.rating_books.books.domain.valueobjects.Title;
+import es.anusky.rating_books.books.domain.valueobjects.*;
+import es.anusky.rating_books.infrastructure.exception.BookNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +25,15 @@ public class BookService {
                 LocalDate.parse(publicationDate)
         );
         return bookRepository.save(book);
+    }
+
+    public Book update(Long bookId, String editorial, String publicationDate) {
+        Book book = bookRepository.findById(bookId).orElseThrow(
+                () -> new BookNotFoundException("Book with ID " + bookId + " not found")
+        );
+        return bookRepository.save(book.update(bookId,
+                editorial,
+                publicationDate));
     }
 
     public List<Book> findAll() {

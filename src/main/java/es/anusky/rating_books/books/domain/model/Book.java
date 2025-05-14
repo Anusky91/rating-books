@@ -23,4 +23,13 @@ public class Book {
         return new Book(null, title, author, editorial, isbn, publicationDate);
     }
 
+    public Book update(Long id, String editorial, String publicationDate) {
+        return new Book(new BookId(id),
+                this.title,
+                this.author,
+                editorial != null ? new Editorial(editorial) : this.editorial,
+                this.isbn,
+                publicationDate != null ? LocalDate.parse(publicationDate) : this.publicationDate);
+    }
+
 }
