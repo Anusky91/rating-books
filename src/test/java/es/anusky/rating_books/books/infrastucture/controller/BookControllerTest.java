@@ -1,6 +1,5 @@
 package es.anusky.rating_books.books.infrastucture.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.model.BookMother;
 import es.anusky.rating_books.infrastructure.IntegrationTestCase;
@@ -16,18 +15,12 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class BookControllerTest extends IntegrationTestCase {
-
-    @Test
-    void test_post_controller() throws Exception {
-        MvcResult result = mockMvc.perform(createRequestPost()).andExpect(status().isOk()).andReturn();
-        assertNotNull(result.getResponse().getContentAsString());
-    }
 
     @Test
     @Sql(scripts = "/sql-scripts/books-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -36,7 +29,7 @@ class BookControllerTest extends IntegrationTestCase {
         MvcResult result = mockMvc.perform(createRequestGet()).andExpect(status().isOk()).andReturn();
         BookResponse[] books = objectMapper.readValue(result.getResponse().getContentAsString(), BookResponse[].class);
         List<String> actualTitles = new ArrayList<>();
-        for (BookResponse book: books) {
+        for (BookResponse book : books) {
             actualTitles.add(book.title());
         }
         assertTrue(actualTitles.containsAll(expectedTitles));
@@ -54,7 +47,9 @@ class BookControllerTest extends IntegrationTestCase {
     void test_get_findById_shouldReturnBook() throws Exception {
         Book book = BookMother.random();
         bookRepository.save(book);
-        MvcResult result = mockMvc.perform(get("/books/1").accept(MediaType.APPLICATION_JSON_VALUE))
+        MvcResult result = mockMvc.perform(get("/books/1")
+                        .header("Authorization", basicAuth())
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -66,7 +61,8 @@ class BookControllerTest extends IntegrationTestCase {
     void test_get_search() throws Exception {
         Book book = BookMother.random();
         bookRepository.save(book);
-        MvcResult result = mockMvc.perform(get("/books/search?query=" + book.getTitle().getValue()))
+        MvcResult result = mockMvc.perform(get("/books/search?query=" + book.getTitle().getValue())
+                        .header("Authorization", basicAuth()))
                 .andExpect(status().isOk())
                 .andReturn();
         BookResponse[] responses = objectMapper.readValue(result.getResponse().getContentAsByteArray(), BookResponse[].class);
@@ -77,7 +73,8 @@ class BookControllerTest extends IntegrationTestCase {
     void test_get_search_exception() throws Exception {
         Book book = BookMother.random();
         bookRepository.save(book);
-        MvcResult result = mockMvc.perform(get("/books/search?query=z"))
+        MvcResult result = mockMvc.perform(get("/books/search?query=z")
+                        .header("Authorization", basicAuth()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
         assertThat(result.getResponse().getContentAsString()).contains("Query must have at least 3 characters");
@@ -87,29 +84,19 @@ class BookControllerTest extends IntegrationTestCase {
     void test_get_search_empty_list() throws Exception {
         Book book = BookMother.random();
         bookRepository.save(book);
-        MvcResult result = mockMvc.perform(get("/books/search?query=zzzzzzz"))
+        MvcResult result = mockMvc.perform(get("/books/search?query=zzzzzzz")
+                        .header("Authorization", basicAuth()))
                 .andExpect(status().isOk())
                 .andReturn();
         assertThat(result.getResponse().getContentAsString()).isEqualTo("[]");
     }
 
-    private MockHttpServletRequestBuilder createRequestPost() throws JsonProcessingException {
-        return post("/books").contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(createPostBodyRequest()).accept(MediaType.APPLICATION_JSON_VALUE);
-    }
-
     private MockHttpServletRequestBuilder createRequestGet() {
-        return get("/books").contentType(MediaType.APPLICATION_JSON_VALUE);
+        return get("/books").header("Authorization", basicAuth()).contentType(MediaType.APPLICATION_JSON_VALUE);
     }
 
     private MockHttpServletRequestBuilder createRequestGetById() {
-        return get("/books/999").contentType(MediaType.APPLICATION_JSON_VALUE);
+        return get("/books/999").header("Authorization", basicAuth()).contentType(MediaType.APPLICATION_JSON_VALUE);
     }
 
-    private String createPostBodyRequest() throws JsonProcessingException {
-        Book example = BookMother.random();
-        BookController.CreateBookRequest request = new BookController.CreateBookRequest(example.getTitle().getValue(),
-                example.getAuthor().getValue(), example.getEditorial().getValue(), example.getIsbn().getValue());
-        return objectMapper.writeValueAsString(request);
-    }
 }

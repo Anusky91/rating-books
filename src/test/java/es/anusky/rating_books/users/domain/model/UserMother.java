@@ -23,4 +23,17 @@ public class UserMother {
                 faker.chuckNorris().fact());
     }
 
+    public static User withAdminRole() {
+        return User.create(new FirstName(faker.name().name()),
+                new LastName(faker.name().lastName()),
+                new Alias("adminTest"),
+                EmailMother.random(),
+                PhoneNumberMother.random(),
+                new Password("passwordTest8!"),
+                new Country("ES"),
+                LocalDate.of(1991, 4, 20),
+                Role.ADMIN,
+                "");
+    }
+
 }

@@ -24,7 +24,9 @@ class TopRatedBooksControllerTest extends IntegrationTestCase {
     @Test
     void test_controller_top() throws Exception {
         createResources();
-        MvcResult result = mockMvc.perform(get("/books/top")).andExpect(status().isOk()).andReturn();
+        MvcResult result = mockMvc.perform(get("/books/top")
+                        .header("Authorization", basicAuth()))
+                .andExpect(status().isOk()).andReturn();
         BookWithRatingResponse[] response = objectMapper.readValue(result.getResponse().getContentAsByteArray(), BookWithRatingResponse[].class);
 
         assertThat(response.length).isEqualTo(10);
@@ -38,7 +40,8 @@ class TopRatedBooksControllerTest extends IntegrationTestCase {
     @Test
     void test_controller_top_5() throws Exception {
         createResources();
-        MvcResult result = mockMvc.perform(get("/books/top?limit=5"))
+        MvcResult result = mockMvc.perform(get("/books/top?limit=5")
+                        .header("Authorization", basicAuth()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(5))
                 .andReturn();
@@ -55,17 +58,17 @@ class TopRatedBooksControllerTest extends IntegrationTestCase {
     private void createResources() {
         List<Book> books = new ArrayList<>();
         List<User> users = new ArrayList<>();
-        for (int i = 0; i < 12 ; i++) {
+        for (int i = 0; i < 12; i++) {
             books.add(bookRepository.save(BookMother.random()));
         }
-        for (int i = 0; i < 12 ; i++) {
+        for (int i = 0; i < 12; i++) {
             users.add(userRepository.save(UserMother.random()));
         }
         Collections.shuffle(books);
         Collections.shuffle(users);
         for (int i = 0; i < 150; i++) {
-            int u = (int)(Math.random() * 10);
-            int b = (int)(Math.random() * 10);
+            int u = (int) (Math.random() * 10);
+            int b = (int) (Math.random() * 10);
             ratingRepository.save(RatingMother.with(books.get(b), users.get(u)));
         }
     }

@@ -5,6 +5,7 @@ import es.anusky.rating_books.shared.infrastructure.responses.UserResponse;
 import es.anusky.rating_books.users.application.UserService;
 import es.anusky.rating_books.users.domain.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/admin/users")
 @RequiredArgsConstructor

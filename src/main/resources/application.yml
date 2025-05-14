@@ -5,15 +5,20 @@ spring:
     servlet:
       path: /bookstar
   datasource:
-    url: jdbc:h2:mem:booksdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/bookstar
+    username: bookuser
+    password: bookpass
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-  h2:
-    console:
-      enabled: true
-
+    properties:
+      hibernate.format_sql: true
+  sql:
+    init:
+      mode: always
+logging:
+  level:
+    org.springframework.security: DEBUG

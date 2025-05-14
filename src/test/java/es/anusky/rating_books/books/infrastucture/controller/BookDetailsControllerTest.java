@@ -24,7 +24,8 @@ class BookDetailsControllerTest extends IntegrationTestCase {
             ratingRepository.save(RatingMother.with(book, user));
         }
 
-        MvcResult result = mockMvc.perform(get("/books/" + book.getId().getValue() + "/details"))
+        MvcResult result = mockMvc.perform(get("/books/" + book.getId().getValue() + "/details")
+                        .header("Authorization", basicAuth()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -39,7 +40,8 @@ class BookDetailsControllerTest extends IntegrationTestCase {
     void test_book_detail_without_rating() throws Exception {
         Book book = bookRepository.save(BookMother.random());
 
-        MvcResult result = mockMvc.perform(get("/books/" + book.getId().getValue() + "/details"))
+        MvcResult result = mockMvc.perform(get("/books/" + book.getId().getValue() + "/details")
+                        .header("Authorization", basicAuth()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -54,7 +56,8 @@ class BookDetailsControllerTest extends IntegrationTestCase {
     void test_book_detail_exception() throws Exception {
         Book book = bookRepository.save(BookMother.random());
 
-        MvcResult result = mockMvc.perform(get("/books/999/details"))
+        MvcResult result = mockMvc.perform(get("/books/999/details")
+                        .header("Authorization", basicAuth()))
                 .andExpect(status().isNotFound())
                 .andReturn();
 

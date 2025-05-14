@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:17
+    container_name: bookstar-db
+    environment:
+      POSTGRES_DB: bookstar
+      POSTGRES_USER: bookuser
+      POSTGRES_PASSWORD: bookpass
+    ports:
+      - "5432:5432"

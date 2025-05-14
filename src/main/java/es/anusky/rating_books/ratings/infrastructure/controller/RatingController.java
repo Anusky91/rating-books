@@ -6,10 +6,12 @@ import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.shared.infrastructure.responses.RatingResponse;
 import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@PreAuthorize("hasRole('USER')")
 @RestController
 @RequestMapping("/ratings")
 @RequiredArgsConstructor
