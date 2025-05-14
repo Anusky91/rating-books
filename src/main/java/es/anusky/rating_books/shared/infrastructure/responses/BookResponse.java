@@ -6,7 +6,8 @@ public record BookResponse(Long id,
                            String title,
                            String author,
                            String editorial,
-                           String isbn) {
+                           String isbn,
+                           String publicationDate) {
 
     public static BookResponse from(Book book) {
         return new BookResponse(
@@ -14,7 +15,8 @@ public record BookResponse(Long id,
                 book.getTitle().getValue(),
                 book.getAuthor().getValue(),
                 book.getEditorial().getValue(),
-                book.getIsbn().getValue()
+                book.getIsbn().getValue(),
+                book.getPublicationDate().toString()
         );
     }
 }

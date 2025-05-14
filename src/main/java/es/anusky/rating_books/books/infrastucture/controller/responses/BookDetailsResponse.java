@@ -18,6 +18,7 @@ public class BookDetailsResponse {
     private String author;
     private String editorial;
     private String isbn;
+    private String publicationDate;
     private Double avgScore;
     private int totalRatings;
     private List<String> lastComments;
@@ -29,6 +30,7 @@ public class BookDetailsResponse {
                 .author(bookDetails.author().getValue())
                 .editorial(bookDetails.editorial().getValue())
                 .isbn(bookDetails.isbn().getValue())
+                .publicationDate(bookDetails.publicationDate().toString())
                 .avgScore(bookDetails.avgScore())
                 .totalRatings(bookDetails.totalRatings())
                 .lastComments(bookDetails.lastComments())

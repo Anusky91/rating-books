@@ -30,6 +30,7 @@ public class GetBookDetailsService {
                     book.getAuthor(),
                     book.getEditorial(),
                     book.getIsbn(),
+                    book.getPublicationDate(),
                     0D,
                     0,
                     List.of());
@@ -46,6 +47,7 @@ public class GetBookDetailsService {
                 book.getAuthor(),
                 book.getEditorial(),
                 book.getIsbn(),
+                book.getPublicationDate(),
                 avgScore,
                 totalRatings,
                 lastComments);

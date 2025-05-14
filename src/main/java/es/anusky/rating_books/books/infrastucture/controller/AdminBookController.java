@@ -28,7 +28,8 @@ public class AdminBookController {
                 request.title(),
                 request.author(),
                 request.editorial(),
-                request.isbn()
+                request.isbn(),
+                request.publicationDate()
         );
         return BookResponse.from(created);
     }
@@ -48,6 +49,11 @@ public class AdminBookController {
                     regexp = "^97[89][- ]?\\d{1,5}[- ]?\\d{1,7}[- ]?\\d{1,7}[- ]?\\d$",
                     message = "Formato de ISBN inválido"
             )
-            String isbn
+            String isbn,
+            @Pattern(
+                    regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$",
+                    message = "Formato de fecha inválido"
+            )
+            String publicationDate
     ) {}
 }

@@ -4,13 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.model.BookMother;
 import es.anusky.rating_books.infrastructure.IntegrationTestCase;
-import es.anusky.rating_books.users.domain.model.UserMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,8 +30,12 @@ class AdminBookControllerTest extends IntegrationTestCase {
 
     private String createPostBodyRequest() throws JsonProcessingException {
         Book example = BookMother.random();
-        AdminBookController.CreateBookRequest request = new AdminBookController.CreateBookRequest(example.getTitle().getValue(),
-                example.getAuthor().getValue(), example.getEditorial().getValue(), example.getIsbn().getValue());
+        AdminBookController.CreateBookRequest request = new AdminBookController.CreateBookRequest(
+                example.getTitle().getValue(),
+                example.getAuthor().getValue(),
+                example.getEditorial().getValue(),
+                example.getIsbn().getValue(),
+                example.getPublicationDate().toString());
         return objectMapper.writeValueAsString(request);
     }
 

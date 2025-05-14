@@ -9,6 +9,7 @@ import es.anusky.rating_books.books.domain.valueobjects.Title;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,12 +18,13 @@ import java.util.Optional;
 public class BookService {
     private final BookRepository bookRepository;
 
-    public Book createBook(String title, String author, String editorial, String isbn) {
+    public Book createBook(String title, String author, String editorial, String isbn, String publicationDate) {
         Book book = Book.create(
                 new Title(title),
                 new Author(author),
                 new Editorial(editorial),
-                new Isbn(isbn)
+                new Isbn(isbn),
+                LocalDate.parse(publicationDate)
         );
         return bookRepository.save(book);
     }
