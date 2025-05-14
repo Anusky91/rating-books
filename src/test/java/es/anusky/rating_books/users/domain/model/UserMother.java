@@ -24,7 +24,8 @@ public class UserMother {
     }
 
     public static User withAdminRole() {
-        return User.create(new FirstName(faker.name().name()),
+        return new User(null,
+                new FirstName(faker.name().name()),
                 new LastName(faker.name().lastName()),
                 new Alias("adminTest"),
                 EmailMother.random(),
@@ -32,7 +33,25 @@ public class UserMother {
                 new Password("passwordTest8!"),
                 new Country("ES"),
                 LocalDate.of(1991, 4, 20),
+                true,
+                false,
                 Role.ADMIN,
+                "");
+    }
+
+    public static User with(String password, boolean enable, boolean locked) {
+        return new User(null,
+                new FirstName(faker.name().name()),
+                new LastName(faker.name().lastName()),
+                new Alias(faker.name().username()),
+                EmailMother.random(),
+                PhoneNumberMother.random(),
+                new Password(password),
+                new Country("ES"),
+                LocalDate.of(1991, 4, 20),
+                enable,
+                locked,
+                Role.USER,
                 "");
     }
 
