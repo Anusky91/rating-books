@@ -15,7 +15,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("🧠 Spring me está usando");
         return userRepository.findByAlias(username)
                 .map(BookStarUserDetails::new)
                 .orElseThrow(() ->

@@ -6,6 +6,7 @@ import es.anusky.rating_books.shared.infrastructure.responses.UserResponse;
 import es.anusky.rating_books.users.domain.model.User;
 import es.anusky.rating_books.users.domain.model.UserMother;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureMockMvc(addFilters = false)
 class PublicUserControllerTest extends IntegrationTestCase {
 
     @Test
@@ -30,7 +32,7 @@ class PublicUserControllerTest extends IntegrationTestCase {
     }
 
     private MockHttpServletRequestBuilder createRequestPost(User user) throws JsonProcessingException {
-        return post("/public/users").header("Authorization", basicAuth())
+        return post("/public/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(createPostBodyRequest(user))
                 .accept(MediaType.APPLICATION_JSON_VALUE);

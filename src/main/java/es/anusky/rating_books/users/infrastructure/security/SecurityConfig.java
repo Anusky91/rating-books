@@ -1,6 +1,5 @@
 package es.anusky.rating_books.users.infrastructure.security;
 
-import es.anusky.rating_books.users.infrastructure.persistence.SpringDataUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +20,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final SpringDataUserRepository userRepository;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,7 +33,8 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**", "/h2-console/**", "/health").permitAll()
+                        .requestMatchers("/public/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/health", "/health/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());
