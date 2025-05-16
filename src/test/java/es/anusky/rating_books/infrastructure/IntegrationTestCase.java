@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import es.anusky.rating_books.RatingBooksApplication;
 import es.anusky.rating_books.books.domain.repository.BookRepository;
 import es.anusky.rating_books.ratings.domain.repository.RatingRepository;
+import es.anusky.rating_books.shared.infrastructure.audit.SpringDataAuditRepository;
 import es.anusky.rating_books.users.domain.model.UserMother;
 import es.anusky.rating_books.users.domain.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -27,6 +28,7 @@ public class IntegrationTestCase {
     @Autowired protected BookRepository bookRepository;
     @Autowired protected RatingRepository ratingRepository;
     @Autowired protected UserRepository userRepository;
+    @Autowired protected SpringDataAuditRepository auditRepository;
 
     @PostConstruct
     public void ensureAdminUserExists() {
