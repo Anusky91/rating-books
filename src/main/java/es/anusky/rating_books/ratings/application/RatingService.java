@@ -8,11 +8,19 @@ import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.repository.RatingRepository;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingComment;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingScore;
+import es.anusky.rating_books.shared.domain.enums.Actions;
+import es.anusky.rating_books.shared.domain.enums.Entities;
+import es.anusky.rating_books.shared.domain.event.AuditEvent;
 import es.anusky.rating_books.shared.domain.valueobjects.UserId;
+import es.anusky.rating_books.users.infrastructure.security.BookStarUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,6 +31,7 @@ public class RatingService {
 
     private final RatingRepository ratingRepository;
     private final BookRepository bookRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Rating create(Long bookId, Long userId, int score, String comment) {
         if (checkUserHasAlreadyRatedABook(bookId, userId)) {
@@ -33,7 +42,10 @@ public class RatingService {
                 new RatingScore(score),
                 new RatingComment(comment),
                 LocalDate.now());
-        return ratingRepository.save(rating);
+
+        var saved = ratingRepository.save(rating);
+        publishEvent(saved, Actions.CREATE);
+        return saved;
     }
 
     public Optional<Rating> findById(Long id) {
@@ -56,7 +68,9 @@ public class RatingService {
         if (rating.isEmpty()){
             throw new RatingNotFoundException("Rating with ID " + id + " not found");
         }
-        return ratingRepository.save(rating.get().update(score, comment));
+        var saved = ratingRepository.save(rating.get().update(score, comment));
+        publishEvent(saved, Actions.UPDATE);
+        return saved;
     }
 
     private boolean checkUserHasAlreadyRatedABook(Long bookId, Long userId) {
@@ -64,5 +78,11 @@ public class RatingService {
                 rating -> Objects.equals(rating.getUserId().getValue(), userId)
         ).toList();
         return !ratings.isEmpty();
+    }
+
+    private void publishEvent(Rating saved, Actions actions) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        BookStarUserDetails user = (BookStarUserDetails) authentication.getPrincipal();
+        eventPublisher.publishEvent(new AuditEvent(LocalDateTime.now(), Entities.RATING.name(), saved.getId().getValue(), actions.name(), user.getUsername(), ""));
     }
 }
