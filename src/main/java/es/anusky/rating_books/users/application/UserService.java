@@ -1,14 +1,19 @@
 package es.anusky.rating_books.users.application;
 
+import es.anusky.rating_books.shared.domain.enums.Actions;
+import es.anusky.rating_books.shared.domain.enums.Entities;
+import es.anusky.rating_books.shared.domain.event.AuditEvent;
 import es.anusky.rating_books.shared.domain.valueobjects.Country;
 import es.anusky.rating_books.users.domain.model.Role;
 import es.anusky.rating_books.users.domain.model.User;
 import es.anusky.rating_books.users.domain.repository.UserRepository;
 import es.anusky.rating_books.users.domain.valueobjects.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public User create(String firstName,
                        String lastName,
@@ -38,7 +44,9 @@ public class UserService {
                 Role.valueOf(role),
                 avatarUrl);
 
-        return userRepository.save(newUser);
+        var saved = userRepository.save(newUser);
+        publishEvent(saved);
+        return saved;
     }
 
     public Optional<User> findById(Long id) {
@@ -55,5 +63,14 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    private void publishEvent(User saved) {
+        eventPublisher.publishEvent(new AuditEvent(LocalDateTime.now(),
+                Entities.USER.name(),
+                saved.getUserId().getValue(),
+                Actions.CREATE.name(),
+                saved.getAlias().getValue(),
+                ""));
     }
 }

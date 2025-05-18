@@ -4,11 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.model.BookMother;
 import es.anusky.rating_books.infrastructure.IntegrationTestCase;
+import es.anusky.rating_books.shared.domain.enums.Entities;
+import es.anusky.rating_books.shared.infrastructure.audit.AuditLogEntity;
 import es.anusky.rating_books.shared.infrastructure.responses.BookResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,7 +25,12 @@ class AdminBookControllerTest extends IntegrationTestCase {
     @Test
     void test_post_controller() throws Exception {
         MvcResult result = mockMvc.perform(createRequestPost()).andExpect(status().isOk()).andReturn();
+
+        List<AuditLogEntity> logs = auditRepository.findAll().stream().filter(
+                audit -> audit.getEntityType().equals(Entities.BOOK.name())
+        ).toList();
         assertNotNull(result.getResponse().getContentAsString());
+        assertThat(logs.size()).isGreaterThanOrEqualTo(1);
     }
 
     @Test
