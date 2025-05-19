@@ -83,6 +83,6 @@ public class RatingService {
     private void publishEvent(Rating saved, Actions actions) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         BookStarUserDetails user = (BookStarUserDetails) authentication.getPrincipal();
-        eventPublisher.publishEvent(new AuditEvent(LocalDateTime.now(), Entities.RATING.name(), saved.getId().getValue(), actions.name(), user.getUsername(), ""));
+        eventPublisher.publishEvent(new AuditEvent(LocalDateTime.now(), Entities.RATING.name(), saved.getId().getValue(), actions.name(), user.getUsername(), "Score: " + saved.getScore().getValue()));
     }
 }

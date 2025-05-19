@@ -71,6 +71,12 @@ public class UserService {
                 saved.getUserId().getValue(),
                 Actions.CREATE.name(),
                 saved.getAlias().getValue(),
-                ""));
+                "Status: " + getStatus(saved)));
+    }
+
+    private String getStatus(User saved) {
+        if (!saved.isEnable()) return "DISABLED";
+        if (saved.isLocked()) return "LOCKED";
+        return "ACTIVE";
     }
 }
