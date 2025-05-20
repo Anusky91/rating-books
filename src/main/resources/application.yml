@@ -9,7 +9,17 @@ spring:
     username: bookuser
     password: bookpass
     driver-class-name: org.postgresql.Driver
-
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: b8a87ed6ed3563
+    password: 15b85ecad199f7
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   jpa:
     hibernate:
       ddl-auto: update

@@ -8,6 +8,7 @@ import es.anusky.rating_books.users.domain.model.Role;
 import es.anusky.rating_books.users.domain.model.User;
 import es.anusky.rating_books.users.domain.repository.UserRepository;
 import es.anusky.rating_books.users.domain.valueobjects.*;
+import es.anusky.rating_books.users.infrastructure.mail.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final EmailService emailService;
 
     public User create(String firstName,
                        String lastName,
@@ -45,6 +47,7 @@ public class UserService {
                 avatarUrl);
 
         var saved = userRepository.create(newUser);
+        emailService.sendActivationEmail(saved.getFirst().getEmail().getValue(), saved.getSecond());
         eventPublisher.publishEvent(buildAuditEvent(saved.getFirst(), saved.getSecond()));
         return saved.getFirst();
     }
