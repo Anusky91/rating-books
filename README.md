@@ -15,6 +15,11 @@ Para ello se ha creado una tabla llamada ``activation_token``
 ## 🔍 Auditoria
 Implantada a través de eventos de Spring y se persiste en la tabla ``audit_log``
 
+## 🧪 Testing
+1. Test de integración de todos los controladores - JaCoCo > 0.80
+2. Test de carga con K6 🗻
+
+
 ## 🎨 Logo
 ![Logo de BookStar](src/main/resources/static/logo.png)
 
