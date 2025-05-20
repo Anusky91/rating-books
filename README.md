@@ -9,6 +9,8 @@
 
 ## 🔐 Seguridad
 Usa Auth Basic - Necesitas crear un usuario, activarlo y mandar alias y contraseña en al llamada.
+Tras la creación del usuario se manda un email con el enlace para activar la cuenta con un token valido solo durante 24h.
+Para ello se ha creado una tabla llamada ``activation_token``
 
 ## 🔍 Auditoria
 Implantada a través de eventos de Spring y se persiste en la tabla ``audit_log``

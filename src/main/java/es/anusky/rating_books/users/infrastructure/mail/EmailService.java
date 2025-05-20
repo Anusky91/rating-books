@@ -31,6 +31,7 @@ public class EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
+        message.setFrom("no-reply@bookstar.dev");
         mailSender.send(message);
     }
 }
