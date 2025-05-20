@@ -73,4 +73,34 @@ public class UserEntity {
         this.role = role;
         this.avatarUrl = avatarUrl;
     }
+
+    public UserEntity(Long id,
+                      String firstName,
+                      String lastName,
+                      String alias,
+                      String email,
+                      String phoneNumber,
+                      String password,
+                      String country,
+                      LocalDate birthDate,
+                      LocalDateTime createdAt,
+                      boolean enable,
+                      boolean locked,
+                      Role role,
+                      String avatarUrl) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.alias = alias;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.country = country;
+        this.birthDate = birthDate;
+        this.createdAt = createdAt;
+        this.enable = enable;
+        this.locked = locked;
+        this.role = role;
+        this.avatarUrl = avatarUrl;
+    }
 }

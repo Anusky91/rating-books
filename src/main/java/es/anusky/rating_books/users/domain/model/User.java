@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class User {
     private final Password password;
     private final Country country;
     private final LocalDate birthDate;
+    private final LocalDateTime createdAt;
     private final boolean enable;
     private final boolean locked;
     private final Role role;
@@ -54,6 +56,7 @@ public class User {
                 password,
                 country,
                 birthDate,
+                null,
                 false,
                 true,
                 role,
@@ -71,6 +74,7 @@ public class User {
                 this.password,
                 this.country,
                 this.birthDate,
+                this.createdAt,
                 true,
                 false,
                 this.role,
