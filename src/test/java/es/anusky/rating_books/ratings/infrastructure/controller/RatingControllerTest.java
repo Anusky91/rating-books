@@ -38,7 +38,7 @@ class RatingControllerTest extends IntegrationTestCase {
     @Test
     void test_findAll() throws Exception {
         Book book = bookRepository.save(BookMother.random());
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
         for (int i = 0; i < 10; i++) {
             ratingRepository.save(RatingMother.with(book, user));
         }
@@ -53,7 +53,7 @@ class RatingControllerTest extends IntegrationTestCase {
     @Test
     void test_findById() throws Exception {
         Book book = bookRepository.save(BookMother.random());
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
         for (int i = 0; i < 10; i++) {
             ratingRepository.save(RatingMother.with(book, user));
         }
@@ -88,7 +88,7 @@ class RatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_rating_already_exists() throws Exception {
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
         Book book = bookRepository.save(BookMother.random());
         Rating rating = ratingRepository.save(RatingMother.with(book, user));
 
@@ -108,7 +108,7 @@ class RatingControllerTest extends IntegrationTestCase {
 
     private String postBody() throws JsonProcessingException {
         Book book = bookRepository.save(BookMother.random());
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
         RatingController.CreateRatingRequest request = new RatingController.CreateRatingRequest(book.getId().getValue(),
                 user.getUserId().getValue(),
                 3,

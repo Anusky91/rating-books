@@ -30,18 +30,27 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({UserNotFoundException.class,
             BookNotFoundException.class,
-            RatingNotFoundException.class})
+            RatingNotFoundException.class,
+            TokenNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserNotFound(RuntimeException e) {
         log.warn("Resource not found: {}", e.getMessage());
         return new ErrorResponse(HttpStatus.NOT_FOUND.toString(), e.getMessage());
     }
 
-    @ExceptionHandler(BookAlreadyRatedByUserException.class)
+    @ExceptionHandler({BookAlreadyRatedByUserException.class,
+                TokenAlreadyUsedException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleBookAlreadyRatedByUserException(BookAlreadyRatedByUserException e) {
+    public ErrorResponse handleBookAlreadyRatedByUserException(RuntimeException e) {
         log.error("Wrong request: ", e);
         return new ErrorResponse(HttpStatus.CONFLICT.toString(), e.getMessage());
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleTokenExpired(TokenExpiredException e) {
+        log.error("Wrong request: ", e);
+        return new ErrorResponse(HttpStatus.FORBIDDEN.toString(), e.getMessage());
     }
 
     @ExceptionHandler(IllegalQueryException.class)

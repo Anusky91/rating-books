@@ -62,7 +62,7 @@ class TopRatedBooksControllerTest extends IntegrationTestCase {
             books.add(bookRepository.save(BookMother.random()));
         }
         for (int i = 0; i < 12; i++) {
-            users.add(userRepository.save(UserMother.random()));
+            users.add(userRepository.create(UserMother.random()).getFirst());
         }
         Collections.shuffle(books);
         Collections.shuffle(users);

@@ -20,7 +20,7 @@ class BookDetailsControllerTest extends IntegrationTestCase {
     void test_book_detail_controller() throws Exception {
         Book book = bookRepository.save(BookMother.random());
         for (int i = 0 ; i < 20 ; i++) {
-            User user = userRepository.save(UserMother.random());
+            User user = userRepository.create(UserMother.random()).getFirst();
             ratingRepository.save(RatingMother.with(book, user));
         }
 

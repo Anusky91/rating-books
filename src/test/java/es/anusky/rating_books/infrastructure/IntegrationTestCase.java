@@ -32,7 +32,7 @@ public class IntegrationTestCase {
 
     @PostConstruct
     public void ensureAdminUserExists() {
-        userRepository.findByAlias("adminTest").orElseGet(() -> userRepository.save(UserMother.withAdminRole()));
+        userRepository.findByAlias("adminTest").orElseGet(() -> userRepository.create(UserMother.withAdminRole()).getFirst());
     }
 
 

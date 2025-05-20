@@ -28,11 +28,9 @@ public class User {
 
     /**
      * Crea una nueva instancia de usuario con estado inicial bloqueado y no habilitado.
-     *
      * Esto representa un flujo típico de registro donde el usuario:
      * - Aún no ha sido activado (por ejemplo, debe confirmar su correo)
      * - No puede iniciar sesión hasta que su cuenta sea habilitada por el sistema o un flujo de verificación
-     *
      * Por defecto:
      * - enable = false → el usuario aún no está activo
      * - locked = true → el usuario no puede autenticarse hasta ser desbloqueado
@@ -62,9 +60,9 @@ public class User {
                 avatarUrl);
     }
 
-    public User withId(UserId userId) {
+    public User activate() {
         return new User(
-                userId,
+                this.userId,
                 this.firstName,
                 this.lastName,
                 this.alias,
@@ -73,8 +71,8 @@ public class User {
                 this.password,
                 this.country,
                 this.birthDate,
-                this.enable,
-                this.locked,
+                true,
+                false,
                 this.role,
                 this.avatarUrl
         );

@@ -20,7 +20,7 @@ class UpdateRatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_update_controller() throws Exception {
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
         Book book = bookRepository.save(BookMother.random());
         Rating actualRating = ratingRepository.save(RatingMother.with(book, user));
 

@@ -2,15 +2,14 @@ package es.anusky.rating_books.users.infrastructure.controller;
 
 import es.anusky.rating_books.infrastructure.exception.UserNotFoundException;
 import es.anusky.rating_books.users.application.UserService;
+import es.anusky.rating_books.users.application.activation.ActivationService;
 import es.anusky.rating_books.users.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,6 +18,7 @@ public class AuthController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final ActivationService activationService;
 
     @PostMapping("/check")
     public ResponseEntity<?> check(@RequestBody AuthRequest request) {
@@ -42,6 +42,12 @@ public class AuthController {
                 user.getRole().getAuthority(),
                 resolveStatus(user))
         );
+    }
+
+    @GetMapping("/activate")
+    public String activate(@RequestParam String token, Model model) {
+        activationService.activate(token);
+        return "activation-success";
     }
 
     private String resolveStatus(User user) {

@@ -18,7 +18,7 @@ class AuthControllerTest extends IntegrationTestCase {
     @Test
     void test_post_return_200() throws Exception {
         String password = "Prueba123!";
-        User user = userRepository.save(UserMother.with(password, true, false));
+        User user = userRepository.create(UserMother.with(password, true, false)).getFirst();
 
         AuthController.AuthRequest request = new AuthController.AuthRequest(user.getAlias().getValue(), password);
 
@@ -39,7 +39,7 @@ class AuthControllerTest extends IntegrationTestCase {
     @Test
     void test_post_return_401() throws Exception {
         String password = "Prueba123!";
-        User user = userRepository.save(UserMother.with(password, true, false));
+        User user = userRepository.create(UserMother.with(password, true, false)).getFirst();
 
         AuthController.AuthRequest request = new AuthController.AuthRequest(user.getAlias().getValue(), "Prueba13!");
 
@@ -56,7 +56,7 @@ class AuthControllerTest extends IntegrationTestCase {
     @Test
     void test_post_return_403() throws Exception {
         String password = "Prueba123!";
-        User user = userRepository.save(UserMother.with(password, true, true));
+        User user = userRepository.create(UserMother.with(password, true, true)).getFirst();
 
         AuthController.AuthRequest request = new AuthController.AuthRequest(user.getAlias().getValue(), password);
 

@@ -66,6 +66,10 @@ public class BookService {
     private void publishEvent(Book saved, Actions actions) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         BookStarUserDetails user = (BookStarUserDetails) authentication.getPrincipal();
-        eventPublisher.publishEvent(new AuditEvent(LocalDateTime.now(), Entities.BOOK.name(), saved.getId().getValue(), actions.name(), user.getUsername(), "ISBN: ".concat(saved.getIsbn().getValue())));
+        eventPublisher.publishEvent(buidlAuditEvent(saved, actions, user));
+    }
+
+    private AuditEvent buidlAuditEvent(Book saved, Actions actions, BookStarUserDetails user) {
+        return new AuditEvent(LocalDateTime.now(), Entities.BOOK.name(), saved.getId().getValue(), actions.name(), user.getUsername(), "ISBN: ".concat(saved.getIsbn().getValue()));
     }
 }

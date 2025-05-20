@@ -44,9 +44,9 @@ public class UserService {
                 Role.valueOf(role),
                 avatarUrl);
 
-        var saved = userRepository.save(newUser);
-        publishEvent(saved);
-        return saved;
+        var saved = userRepository.create(newUser);
+        eventPublisher.publishEvent(buildAuditEvent(saved.getFirst(), saved.getSecond()));
+        return saved.getFirst();
     }
 
     public Optional<User> findById(Long id) {
@@ -65,18 +65,12 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    private void publishEvent(User saved) {
-        eventPublisher.publishEvent(new AuditEvent(LocalDateTime.now(),
+    private AuditEvent buildAuditEvent(User saved, String token) {
+        return new AuditEvent(LocalDateTime.now(),
                 Entities.USER.name(),
                 saved.getUserId().getValue(),
                 Actions.CREATE.name(),
                 saved.getAlias().getValue(),
-                "Status: " + getStatus(saved)));
-    }
-
-    private String getStatus(User saved) {
-        if (!saved.isEnable()) return "DISABLED";
-        if (saved.isLocked()) return "LOCKED";
-        return "ACTIVE";
+                "Token: " + token);
     }
 }

@@ -24,7 +24,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
         List<String> aliasSaved = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = UserMother.random();
-            userRepository.save(user);
+            userRepository.create(user);
             aliasSaved.add(user.getAlias().getValue());
         }
         MvcResult result = mockMvc.perform(get("/admin/users")
@@ -45,7 +45,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
     @Test
     void test_findById() throws Exception {
 
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
 
         MvcResult result = mockMvc.perform(get("/admin/users/" + user.getUserId().getValue())
                         .header("Authorization", basicAuth())
@@ -61,7 +61,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
     @Test
     void test_findByAlias() throws Exception {
 
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
 
         MvcResult result = mockMvc.perform(get("/admin/users/alias/" + user.getAlias().getValue())
                         .header("Authorization", basicAuth())
@@ -77,7 +77,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
     @Test
     void test_findByEmail() throws Exception {
 
-        User user = userRepository.save(UserMother.random());
+        User user = userRepository.create(UserMother.random()).getFirst();
 
         MvcResult result = mockMvc.perform(get("/admin/users/email/" + user.getEmail().getValue())
                         .header("Authorization", basicAuth())
