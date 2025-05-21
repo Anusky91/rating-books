@@ -16,6 +16,7 @@ Para ello se ha creado una tabla llamada ``activation_token``
 Implantada a través de eventos de Spring y se persiste en la tabla ``audit_log``
 
 ## 🧪 Testing
+**Para ejecutar los test hay que arrancar primero el contenedor de MailHog**
 1. Test de integración de todos los controladores - JaCoCo > 0.80
 2. Test de carga con K6 🗻 [Documentación](test-k6/k6-docs.md) 
 

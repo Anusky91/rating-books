@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Pair<User, String> create(User user) {
         var entity = mapper.toEntity(user);
         var saved = springDataUserRepository.save(entity);
-        String token = generator.generate(saved);
+        String token = generator.generateNewToken(saved);
         return Pair.of(mapper.toDomain(saved), token);
     }
 

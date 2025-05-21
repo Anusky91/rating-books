@@ -41,18 +41,18 @@ public class ActivationService {
                 () -> new UserNotFoundException("User not found while trying to active it!")
         );
         var saved = userRepository.update(user.activate());
-        publishEvent(saved);
+        eventPublisher.publishEvent(buildAuditEvent(saved));
         existing.setUsed(true);
         tokenRepository.save(existing);
 
     }
 
-    private void publishEvent(User saved) {
-        eventPublisher.publishEvent(new AuditEvent(LocalDateTime.now(),
+    private AuditEvent buildAuditEvent(User saved) {
+        return new AuditEvent(LocalDateTime.now(),
                 Entities.USER.name(),
                 saved.getUserId().getValue(),
                 Actions.UPDATE.name(),
                 saved.getAlias().getValue(),
-                "User activated"));
+                "User activated");
     }
 }

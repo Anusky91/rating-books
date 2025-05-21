@@ -16,3 +16,14 @@ spring:
   sql:
     init:
       mode: always
+  mail:
+    host: localhost
+    port: 1025
+    username: dummy
+    password: dummy
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false

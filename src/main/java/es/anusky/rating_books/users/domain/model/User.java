@@ -82,4 +82,47 @@ public class User {
         );
     }
 
+    public User lock() {
+        return new User(
+                this.userId,
+                this.firstName,
+                this.lastName,
+                this.alias,
+                this.email,
+                this.phoneNumber,
+                this.password,
+                this.country,
+                this.birthDate,
+                this.createdAt,
+                this.enable,
+                true,
+                this.role,
+                this.avatarUrl
+        );
+    }
+
+    /**
+     * Creates a new instance of User with a new encrypted password
+     * @param password encrypted password
+     * @return new User
+     */
+    public User resetPassword(String password) {
+        return new User(
+                this.userId,
+                this.firstName,
+                this.lastName,
+                this.alias,
+                this.email,
+                this.phoneNumber,
+                Password.fromEncoded(password),
+                this.country,
+                this.birthDate,
+                this.createdAt,
+                this.enable,
+                false,
+                this.role,
+                this.avatarUrl
+        );
+    }
+
 }
