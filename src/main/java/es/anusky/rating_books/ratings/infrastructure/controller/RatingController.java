@@ -21,7 +21,6 @@ public class RatingController {
     @PostMapping
     public RatingResponse save(@RequestBody CreateRatingRequest request) {
         Rating created = ratingService.create(request.bookId(),
-                request.userId(),
                 request.score(),
                 request.comment());
         return RatingResponse.from(created);
@@ -50,7 +49,6 @@ public class RatingController {
     }
 
     public record CreateRatingRequest(@NotNull Long bookId,
-                                      @NotNull Long userId,
                                       @Min(1) @Max(5) int score,
                                       @NotBlank @Size(max = 1000)String comment){}
 }

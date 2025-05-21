@@ -16,9 +16,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class RatingControllerTest extends IntegrationTestCase {
@@ -88,12 +89,11 @@ class RatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_rating_already_exists() throws Exception {
-        User user = userRepository.create(UserMother.random()).getFirst();
+        User user = userRepository.findByAlias("adminTest").orElseThrow();
         Book book = bookRepository.save(BookMother.random());
         Rating rating = ratingRepository.save(RatingMother.with(book, user));
 
         RatingController.CreateRatingRequest request = new RatingController.CreateRatingRequest(rating.getBookId(),
-                rating.getUserId().getValue(),
                 3,
                 "Cualquie cosa vale.");
 
@@ -103,14 +103,12 @@ class RatingControllerTest extends IntegrationTestCase {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isConflict()).andReturn();
 
-        assertTrue(result.getResponse().getContentAsString().contains("Already exists a rating for the this book"));
+        assertTrue(result.getResponse().getContentAsString().contains("{\"status\":\"409 CONFLICT\",\"error\":\"Already exists a rating for this book\"}"));
     }
 
     private String postBody() throws JsonProcessingException {
         Book book = bookRepository.save(BookMother.random());
-        User user = userRepository.create(UserMother.random()).getFirst();
         RatingController.CreateRatingRequest request = new RatingController.CreateRatingRequest(book.getId().getValue(),
-                user.getUserId().getValue(),
                 3,
                 "El mejor libro de autoayuda que he leido.");
         return objectMapper.writeValueAsString(request);
