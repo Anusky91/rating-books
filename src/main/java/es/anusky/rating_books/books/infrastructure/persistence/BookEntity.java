@@ -1,4 +1,4 @@
-package es.anusky.rating_books.books.infrastucture.persistence;
+package es.anusky.rating_books.books.infrastructure.persistence;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

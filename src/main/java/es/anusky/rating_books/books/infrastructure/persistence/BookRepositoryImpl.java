@@ -1,8 +1,8 @@
-package es.anusky.rating_books.books.infrastucture.persistence;
+package es.anusky.rating_books.books.infrastructure.persistence;
 
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.repository.BookRepository;
-import es.anusky.rating_books.books.infrastucture.mapper.BookMapper;
+import es.anusky.rating_books.books.infrastructure.mapper.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

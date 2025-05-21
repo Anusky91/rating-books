@@ -1,8 +1,8 @@
-package es.anusky.rating_books.books.infrastucture.mapper;
+package es.anusky.rating_books.books.infrastructure.mapper;
 
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.valueobjects.*;
-import es.anusky.rating_books.books.infrastucture.persistence.BookEntity;
+import es.anusky.rating_books.books.infrastructure.persistence.BookEntity;
 
 public class BookMapper {
 

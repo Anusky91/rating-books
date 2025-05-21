@@ -1,4 +1,4 @@
-package es.anusky.rating_books.books.infrastucture.controller;
+package es.anusky.rating_books.books.infrastructure.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.anusky.rating_books.books.domain.model.Book;

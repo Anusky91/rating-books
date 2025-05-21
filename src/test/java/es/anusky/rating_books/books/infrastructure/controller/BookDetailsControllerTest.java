@@ -1,8 +1,8 @@
-package es.anusky.rating_books.books.infrastucture.controller;
+package es.anusky.rating_books.books.infrastructure.controller;
 
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.model.BookMother;
-import es.anusky.rating_books.books.infrastucture.controller.responses.BookDetailsResponse;
+import es.anusky.rating_books.books.infrastructure.controller.responses.BookDetailsResponse;
 import es.anusky.rating_books.infrastructure.IntegrationTestCase;
 import es.anusky.rating_books.ratings.domain.model.RatingMother;
 import es.anusky.rating_books.users.domain.model.User;

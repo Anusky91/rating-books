@@ -1,4 +1,4 @@
-package es.anusky.rating_books.books.infrastucture.controller;
+package es.anusky.rating_books.books.infrastructure.controller;
 
 import es.anusky.rating_books.books.application.BookService;
 import es.anusky.rating_books.books.application.search.SearchBookService;

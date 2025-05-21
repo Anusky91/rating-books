@@ -1,4 +1,4 @@
-package es.anusky.rating_books.books.infrastucture.controller;
+package es.anusky.rating_books.books.infrastructure.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.books.domain.model.BookMother;
-import es.anusky.rating_books.books.infrastucture.controller.responses.BookWithRatingResponse;
+import es.anusky.rating_books.books.infrastructure.controller.responses.BookWithRatingResponse;
 import es.anusky.rating_books.infrastructure.IntegrationTestCase;
 import es.anusky.rating_books.ratings.domain.model.RatingMother;
 import es.anusky.rating_books.users.domain.model.User;

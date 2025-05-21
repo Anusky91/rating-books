@@ -1,7 +1,7 @@
-package es.anusky.rating_books.books.infrastucture.controller;
+package es.anusky.rating_books.books.infrastructure.controller;
 
 import es.anusky.rating_books.books.application.topratedbooks.GetTopRatedBooksService;
-import es.anusky.rating_books.books.infrastucture.controller.responses.BookWithRatingResponse;
+import es.anusky.rating_books.books.infrastructure.controller.responses.BookWithRatingResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package es.anusky.rating_books.books.infrastucture.controller.responses;
+package es.anusky.rating_books.books.infrastructure.controller.responses;
 
 import es.anusky.rating_books.books.domain.model.BookWithRating;
 import lombok.AllArgsConstructor;

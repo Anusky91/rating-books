@@ -1,17 +1,15 @@
 package es.anusky.rating_books.ratings.infrastructure.mapper;
 
-import es.anusky.rating_books.books.infrastucture.persistence.BookEntity;
+import es.anusky.rating_books.books.infrastructure.persistence.BookEntity;
 import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingComment;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingId;
 import es.anusky.rating_books.ratings.domain.valueobjects.RatingScore;
-import es.anusky.rating_books.shared.domain.valueobjects.UserId;
 import es.anusky.rating_books.ratings.infrastructure.persistence.RatingEntity;
+import es.anusky.rating_books.shared.domain.valueobjects.UserId;
 import es.anusky.rating_books.users.infrastructure.persistence.UserEntity;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 @Component
 public class RatingMapper {
 

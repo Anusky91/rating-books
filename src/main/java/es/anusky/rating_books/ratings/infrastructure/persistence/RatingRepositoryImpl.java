@@ -1,6 +1,6 @@
 package es.anusky.rating_books.ratings.infrastructure.persistence;
 
-import es.anusky.rating_books.books.infrastucture.persistence.SpringDataBookRepository;
+import es.anusky.rating_books.books.infrastructure.persistence.SpringDataBookRepository;
 import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.repository.RatingRepository;
 import es.anusky.rating_books.ratings.infrastructure.mapper.RatingMapper;

@@ -1,6 +1,6 @@
 package es.anusky.rating_books.ratings.infrastructure.persistence;
 
-import es.anusky.rating_books.books.infrastucture.persistence.BookEntity;
+import es.anusky.rating_books.books.infrastructure.persistence.BookEntity;
 import es.anusky.rating_books.users.infrastructure.persistence.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
