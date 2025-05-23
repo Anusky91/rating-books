@@ -46,4 +46,9 @@ public class IntegrationTestCase {
         return "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
     }
 
+    public String basicAuth(String alias, String password) {
+        String credentials = alias + ":" + password;
+        return "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
+    }
+
 }

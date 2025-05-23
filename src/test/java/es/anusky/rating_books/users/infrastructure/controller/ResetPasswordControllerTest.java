@@ -25,7 +25,7 @@ class ResetPasswordControllerTest extends IntegrationTestCase {
     void test_init_recover_with_existing_user() throws Exception {
         Pair<MvcResult, User> results = testResetHappyPath();
 
-        assertThat(results.getFirst().getResponse().getContentAsString()).isEqualTo("Ok");
+        assertThat(results.getFirst().getResponse().getContentAsString()).isEqualTo("{\"message\":\"Ok\"}");
         Thread.sleep(500);
 
         assertThat(MailHogHelper.containsEmailTo(results.getSecond().getEmail().getValue())).isTrue();
@@ -43,7 +43,7 @@ class ResetPasswordControllerTest extends IntegrationTestCase {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertThat(result.getResponse().getContentAsString()).isEqualTo("Ok");
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"message\":\"Ok\"}");
         Thread.sleep(500);
 
         assertThat(MailHogHelper.containsAliasOnBody(alias)).isFalse();
@@ -54,7 +54,7 @@ class ResetPasswordControllerTest extends IntegrationTestCase {
     void test_reset_password_200() throws Exception {
         Pair<MvcResult, User> results = testResetHappyPath();
 
-        assertThat(results.getFirst().getResponse().getContentAsString()).isEqualTo("Ok");
+        assertThat(results.getFirst().getResponse().getContentAsString()).isEqualTo("{\"message\":\"Ok\"}");
         Thread.sleep(500);
         Optional<String> emailBody = MailHogHelper.getEmailBody(results.getSecond().getEmail().getValue());
         String token = TokenExtractor.extract(emailBody.orElse(""));
@@ -66,7 +66,7 @@ class ResetPasswordControllerTest extends IntegrationTestCase {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getContentAsString()).isEqualTo("Contraseña restaurada con exito");
+        assertThat(mvcResult.getResponse().getContentAsString()).isEqualTo("{\"message\":\"Contraseña restaurada con exito\"}");
         User updated = userRepository.findByAlias(results.getSecond().getAlias().getValue()).orElseThrow();
         assertThat(updated.isLocked()).isFalse();
 
@@ -76,7 +76,7 @@ class ResetPasswordControllerTest extends IntegrationTestCase {
     void test_reset_password_404() throws Exception {
         Pair<MvcResult, User> results = testResetHappyPath();
 
-        assertThat(results.getFirst().getResponse().getContentAsString()).isEqualTo("Ok");
+        assertThat(results.getFirst().getResponse().getContentAsString()).isEqualTo("{\"message\":\"Ok\"}");
         Thread.sleep(500);
         String token = UUID.randomUUID().toString();
 

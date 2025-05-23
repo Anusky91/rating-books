@@ -1,5 +1,6 @@
 package es.anusky.rating_books.users.infrastructure.controller;
 
+import es.anusky.rating_books.shared.infrastructure.responses.ApiResponse;
 import es.anusky.rating_books.users.application.resetpassword.ResetPasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,16 +15,16 @@ public class ResetPasswordController {
 
     @PostMapping("/recover")
     @ResponseStatus(HttpStatus.OK)
-    public String initRecover(@RequestBody RecoverPasswordRequest request) {
+    public ApiResponse initRecover(@RequestBody RecoverPasswordRequest request) {
         resetPasswordService.init(request.alias());
-        return "Ok";
+        return new ApiResponse("Ok");
     }
 
     @PostMapping("/reset-password")
     @ResponseStatus(HttpStatus.OK)
-    public String reset(@RequestBody ResetPasswordRequest request) {
+    public ApiResponse reset(@RequestBody ResetPasswordRequest request) {
         resetPasswordService.reset(request.token(), request.newPassword());
-        return "Contraseña restaurada con exito";
+        return new ApiResponse("Contraseña restaurada con exito");
     }
 
     public record RecoverPasswordRequest(String alias) {}

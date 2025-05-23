@@ -57,4 +57,21 @@ public class UserMother {
                 "");
     }
 
+    public static User withAliasAndPassword(String alias, String password) {
+        return new User(null,
+                new FirstName(faker.name().name()),
+                new LastName(faker.name().lastName()),
+                new Alias(alias),
+                EmailMother.random(),
+                PhoneNumberMother.random(),
+                new Password(password),
+                new Country("ES"),
+                LocalDate.of(1991, 4, 20),
+                null,
+                true,
+                false,
+                Role.USER,
+                "");
+    }
+
 }

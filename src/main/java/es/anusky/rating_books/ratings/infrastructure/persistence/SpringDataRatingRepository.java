@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SpringDataRatingRepository extends JpaRepository<RatingEntity, Long> {
     List<RatingEntity> findByBookId(Long id);
+    boolean existsByUser_IdAndBookId(Long userId, Long bookId);
 }

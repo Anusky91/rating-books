@@ -20,7 +20,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     private final SpringDataFavoriteRepository favoriteRepository;
     private final SpringDataBookRepository bookRepository;
     private final SpringDataUserRepository userRepository;
-    public final FavoriteMapper mapper;
+    private final FavoriteMapper mapper;
 
     @Override
     public Favorite save(Favorite favorite) {

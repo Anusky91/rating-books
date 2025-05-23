@@ -19,7 +19,7 @@ public class Favorite {
     private final UserId userId;
     private final LocalDateTime addedAt;
 
-    public static Favorite create(FavoriteId id, BookId bookId, UserId userId) {
-        return new Favorite(id, bookId, userId, LocalDateTime.now());
+    public static Favorite create(BookId bookId, UserId userId) {
+        return new Favorite(null, bookId, userId, LocalDateTime.now());
     }
 }

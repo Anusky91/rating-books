@@ -39,7 +39,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({BookAlreadyRatedByUserException.class,
-                TokenAlreadyUsedException.class})
+            TokenAlreadyUsedException.class,
+            FavoriteAlreadyExistsException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleBookAlreadyRatedByUserException(RuntimeException e) {
         log.error("Wrong request: ", e);
