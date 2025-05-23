@@ -54,4 +54,17 @@ public class RatingRepositoryImpl implements RatingRepository {
                 .map(mapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public List<Rating> findByUserId(Long userId) {
+        return springDataRatingRepository.findByUserId(userId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public int countByUserId(Long userId) {
+        return springDataRatingRepository.countByUserId(userId);
+    }
 }

@@ -25,7 +25,7 @@ class BookDetailsControllerTest extends IntegrationTestCase {
         }
 
         MvcResult result = mockMvc.perform(get("/books/" + book.getId().getValue() + "/details")
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -41,7 +41,7 @@ class BookDetailsControllerTest extends IntegrationTestCase {
         Book book = bookRepository.save(BookMother.random());
 
         MvcResult result = mockMvc.perform(get("/books/" + book.getId().getValue() + "/details")
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -57,7 +57,7 @@ class BookDetailsControllerTest extends IntegrationTestCase {
         Book book = bookRepository.save(BookMother.random());
 
         MvcResult result = mockMvc.perform(get("/books/999/details")
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isNotFound())
                 .andReturn();
 

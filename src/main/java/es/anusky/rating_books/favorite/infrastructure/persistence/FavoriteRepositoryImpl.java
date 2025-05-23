@@ -54,4 +54,14 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     public boolean existsByBookIdAndUserId(Long bookId, Long userId) {
         return favoriteRepository.existsByBook_IdAndUser_Id(bookId, userId);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        favoriteRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Favorite> findByIdAndUserId(Long id, Long userId) {
+        return favoriteRepository.findByIdAndUser_Id(id, userId).map(mapper::toDomain);
+    }
 }

@@ -25,7 +25,7 @@ class TopRatedBooksControllerTest extends IntegrationTestCase {
     void test_controller_top() throws Exception {
         createResources();
         MvcResult result = mockMvc.perform(get("/books/top")
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk()).andReturn();
         BookWithRatingResponse[] response = objectMapper.readValue(result.getResponse().getContentAsByteArray(), BookWithRatingResponse[].class);
 
@@ -41,7 +41,7 @@ class TopRatedBooksControllerTest extends IntegrationTestCase {
     void test_controller_top_5() throws Exception {
         createResources();
         MvcResult result = mockMvc.perform(get("/books/top?limit=5")
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(5))
                 .andReturn();

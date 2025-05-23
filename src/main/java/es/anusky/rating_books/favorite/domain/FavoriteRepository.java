@@ -11,4 +11,6 @@ public interface FavoriteRepository {
     List<Favorite> findAll();
     List<Favorite> findByUserId(Long userId);
     boolean existsByBookIdAndUserId(Long bookId, Long userId);
+    void deleteById(Long id);
+    Optional<Favorite> findByIdAndUserId(Long id, Long userId);
 }

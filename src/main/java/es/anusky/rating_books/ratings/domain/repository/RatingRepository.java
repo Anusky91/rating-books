@@ -13,4 +13,6 @@ public interface RatingRepository {
     List<Rating> findAll();
 
     List<Rating> findByBookId(Long bookId);
+    List<Rating> findByUserId(Long userId);
+    int countByUserId(Long userId);
 }

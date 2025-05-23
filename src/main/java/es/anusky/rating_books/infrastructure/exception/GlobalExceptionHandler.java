@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({UserNotFoundException.class,
             BookNotFoundException.class,
             RatingNotFoundException.class,
-            TokenNotFoundException.class})
+            TokenNotFoundException.class,
+            NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserNotFound(RuntimeException e) {
         log.warn("Resource not found: {}", e.getMessage());

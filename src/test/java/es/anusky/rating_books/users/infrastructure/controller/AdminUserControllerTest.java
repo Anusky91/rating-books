@@ -28,7 +28,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
             aliasSaved.add(user.getAlias().getValue());
         }
         MvcResult result = mockMvc.perform(get("/admin/users")
-                        .header("Authorization", basicAuth())
+                        .header("Authorization", basicAuthAdmin())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk()).andReturn();
         List<String> aliasRecovered = new ArrayList<>();
@@ -48,7 +48,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
         User user = userRepository.create(UserMother.random()).getFirst();
 
         MvcResult result = mockMvc.perform(get("/admin/users/" + user.getUserId().getValue())
-                        .header("Authorization", basicAuth())
+                        .header("Authorization", basicAuthAdmin())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk()).andReturn();
 
@@ -64,7 +64,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
         User user = userRepository.create(UserMother.random()).getFirst();
 
         MvcResult result = mockMvc.perform(get("/admin/users/alias/" + user.getAlias().getValue())
-                        .header("Authorization", basicAuth())
+                        .header("Authorization", basicAuthAdmin())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk()).andReturn();
 
@@ -80,7 +80,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
         User user = userRepository.create(UserMother.random()).getFirst();
 
         MvcResult result = mockMvc.perform(get("/admin/users/email/" + user.getEmail().getValue())
-                        .header("Authorization", basicAuth())
+                        .header("Authorization", basicAuthAdmin())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk()).andReturn();
 
@@ -92,7 +92,7 @@ class AdminUserControllerTest extends IntegrationTestCase {
 
     @Test
     void test_findByAlias_shouldReturn404_whenNotFound() throws Exception {
-        mockMvc.perform(get("/admin/users/alias/aliasInexistente").header("Authorization", basicAuth()))
+        mockMvc.perform(get("/admin/users/alias/aliasInexistente").header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isNotFound());
     }
 

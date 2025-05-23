@@ -47,14 +47,14 @@ class AdminBookControllerTest extends IntegrationTestCase {
     }
 
     private MockHttpServletRequestBuilder createRequestPost() throws JsonProcessingException {
-        return post("/admin/books").header("Authorization", basicAuth())
+        return post("/admin/books").header("Authorization", basicAuthAdmin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(createPostBodyRequest())
                 .accept(MediaType.APPLICATION_JSON_VALUE);
     }
 
     private MockHttpServletRequestBuilder createRequestPut(Book book) throws JsonProcessingException {
-        return put("/admin/books/update").header("Authorization", basicAuth())
+        return put("/admin/books/update").header("Authorization", basicAuthAdmin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(createPutBodyRequest(book))
                 .accept(MediaType.APPLICATION_JSON_VALUE);

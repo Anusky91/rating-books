@@ -27,7 +27,7 @@ class RatingControllerTest extends IntegrationTestCase {
     @Test
     void test_post_controller() throws Exception {
         MvcResult result = mockMvc.perform(post("/ratings")
-                        .header("Authorization", basicAuth())
+                        .header("Authorization", basicAuthAdmin())
                         .content(postBody())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -43,7 +43,7 @@ class RatingControllerTest extends IntegrationTestCase {
         for (int i = 0; i < 10; i++) {
             ratingRepository.save(RatingMother.with(book, user));
         }
-        MvcResult result = mockMvc.perform(get("/ratings").header("Authorization", basicAuth()))
+        MvcResult result = mockMvc.perform(get("/ratings").header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk())
                 .andReturn();
         RatingResponse[] responses = objectMapper.readValue(result.getResponse().getContentAsByteArray(), RatingResponse[].class);
@@ -60,7 +60,7 @@ class RatingControllerTest extends IntegrationTestCase {
         }
         Rating saved = ratingRepository.save(RatingMother.with(book, user));
 
-        MvcResult result = mockMvc.perform(get("/ratings/" + saved.getId().getValue()).header("Authorization", basicAuth()))
+        MvcResult result = mockMvc.perform(get("/ratings/" + saved.getId().getValue()).header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk()).andReturn();
 
         RatingResponse response = objectMapper.readValue(result.getResponse().getContentAsByteArray(), RatingResponse.class);
@@ -71,7 +71,7 @@ class RatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_rating_NotFound() throws Exception {
-        MvcResult result = mockMvc.perform(get("/ratings/999").header("Authorization", basicAuth()))
+        MvcResult result = mockMvc.perform(get("/ratings/999").header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isNotFound())
                 .andReturn();
 
@@ -80,7 +80,7 @@ class RatingControllerTest extends IntegrationTestCase {
 
     @Test
     void test_rating_byBook_NotFound() throws Exception {
-        MvcResult result = mockMvc.perform(get("/ratings/book/999").header("Authorization", basicAuth()))
+        MvcResult result = mockMvc.perform(get("/ratings/book/999").header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isNotFound())
                 .andReturn();
 
@@ -98,7 +98,7 @@ class RatingControllerTest extends IntegrationTestCase {
                 "Cualquie cosa vale.");
 
         MvcResult result = mockMvc.perform(post("/ratings")
-                .header("Authorization", basicAuth())
+                .header("Authorization", basicAuthAdmin())
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isConflict()).andReturn();

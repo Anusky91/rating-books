@@ -48,7 +48,7 @@ class BookControllerTest extends IntegrationTestCase {
         Book book = BookMother.random();
         bookRepository.save(book);
         MvcResult result = mockMvc.perform(get("/books/1")
-                        .header("Authorization", basicAuth())
+                        .header("Authorization", basicAuthAdmin())
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -62,7 +62,7 @@ class BookControllerTest extends IntegrationTestCase {
         Book book = BookMother.random();
         bookRepository.save(book);
         MvcResult result = mockMvc.perform(get("/books/search?query=" + book.getTitle().getValue())
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk())
                 .andReturn();
         BookResponse[] responses = objectMapper.readValue(result.getResponse().getContentAsByteArray(), BookResponse[].class);
@@ -74,7 +74,7 @@ class BookControllerTest extends IntegrationTestCase {
         Book book = BookMother.random();
         bookRepository.save(book);
         MvcResult result = mockMvc.perform(get("/books/search?query=z")
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
         assertThat(result.getResponse().getContentAsString()).contains("Query must have at least 3 characters");
@@ -85,18 +85,18 @@ class BookControllerTest extends IntegrationTestCase {
         Book book = BookMother.random();
         bookRepository.save(book);
         MvcResult result = mockMvc.perform(get("/books/search?query=zzzzzzz")
-                        .header("Authorization", basicAuth()))
+                        .header("Authorization", basicAuthAdmin()))
                 .andExpect(status().isOk())
                 .andReturn();
         assertThat(result.getResponse().getContentAsString()).isEqualTo("[]");
     }
 
     private MockHttpServletRequestBuilder createRequestGet() {
-        return get("/books").header("Authorization", basicAuth()).contentType(MediaType.APPLICATION_JSON_VALUE);
+        return get("/books").header("Authorization", basicAuthAdmin()).contentType(MediaType.APPLICATION_JSON_VALUE);
     }
 
     private MockHttpServletRequestBuilder createRequestGetById() {
-        return get("/books/999").header("Authorization", basicAuth()).contentType(MediaType.APPLICATION_JSON_VALUE);
+        return get("/books/999").header("Authorization", basicAuthAdmin()).contentType(MediaType.APPLICATION_JSON_VALUE);
     }
 
 }
