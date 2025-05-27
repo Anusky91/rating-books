@@ -21,9 +21,10 @@ Implantada a través de eventos de Spring y se persiste en la tabla ``audit_log`
 2. Test de carga con K6 🗻 [Documentación](test-k6/k6-docs.md) 
 
 ## Observabilidad
-Prometheus
-Grafana - url [UI Web](http://localhost:3000/)
+Prometheus - URL [UI Web](http://localhost:9090/query)  
+Grafana - URL [UI Web](http://localhost:3000/)
  - Login - ``admin`` ,  ``Liqui2022*-`` 
+Loki (logs) - A través de Grafana
 
 ## 🎨 Logo
 ![Logo de BookStar](src/main/resources/static/logo.png)

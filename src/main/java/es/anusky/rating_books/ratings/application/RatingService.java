@@ -16,6 +16,8 @@ import es.anusky.rating_books.shared.domain.valueobjects.UserId;
 import es.anusky.rating_books.shared.infrastructure.security.AuthenticatedUserProvider;
 import es.anusky.rating_books.users.domain.model.User;
 import es.anusky.rating_books.users.domain.repository.UserRepository;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -34,8 +36,11 @@ public class RatingService {
     private final ApplicationEventPublisher eventPublisher;
     private final AuthenticatedUserProvider userProvider;
     private final UserRepository userRepository;
+    private final MeterRegistry meterRegistry;
 
+    @Timed(value = "bookstar.rating.add.time", description = "Time taken to add a rating")
     public Rating create(Long bookId, int score, String comment) {
+        meterRegistry.counter("bookstar.rating.add").increment();
         String alias = userProvider.getCurrentAlias();
         User user = userRepository.findByAlias(alias).orElseThrow(
                 () -> new UserNotFoundException("User with alias " + alias + " not found")

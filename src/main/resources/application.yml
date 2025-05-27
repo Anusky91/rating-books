@@ -25,19 +25,25 @@ spring:
       ddl-auto: update
     show-sql: true
     properties:
-      hibernate.format_sql: true
+      hibernate.format_sql: false
   sql:
     init:
       mode: always
 logging:
-  level:
-    org.springframework.security: DEBUG
+  file:
+    name: logs/app.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
 management:
+  metrics:
+    enable:
+      method:
+        timed: true
   endpoints:
     web:
       exposure:
-        include: "prometheus"
-  metrics:
-    export:
-      prometheus:
-        enabled: true
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
