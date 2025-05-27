@@ -16,6 +16,8 @@ import es.anusky.rating_books.shared.infrastructure.responses.FavoriteResponse;
 import es.anusky.rating_books.shared.infrastructure.security.AuthenticatedUserProvider;
 import es.anusky.rating_books.users.domain.model.User;
 import es.anusky.rating_books.users.domain.repository.UserRepository;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -33,8 +35,11 @@ public class FavoriteService {
     private final AuthenticatedUserProvider userProvider;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final MeterRegistry meterRegistry;
 
+    @Timed(value = "bookstar.favorite.add.time", description = "Time taken to add a favorite")
     public void addFavorite(Long bookId) {
+        meterRegistry.counter("bookstar.favorite.add").increment();
         User user = extractUser();
         if (favoriteRepository.existsByBookIdAndUserId(bookId, user.getUserId().getValue())) {
             throw new FavoriteAlreadyExistsException(bookId, user.getUserId().getValue());
@@ -60,9 +65,11 @@ public class FavoriteService {
                 }).toList();
     }
 
+    @Timed(value = "bookstar.favorite.removed.time", description = "Time taken to remove a favorite")
     public void deleteFavorite(Long id) {
+        meterRegistry.counter("bookstar.favorite.remove").increment();
         User user = extractUser();
-        Favorite favorites = favoriteRepository.findByIdAndUserId(id, user.getUserId().getValue()).orElseThrow(
+        favoriteRepository.findByIdAndUserId(id, user.getUserId().getValue()).orElseThrow(
                 () -> new NotFoundException("Favorite not found for current user")
         );
         favoriteRepository.deleteById(id);
@@ -71,7 +78,7 @@ public class FavoriteService {
                 id,
                 Actions.DELETE.name(),
                 user.getAlias().getValue(),
-                "Favorite with ID " + id + "deleted correctly"));
+                "Favorite with ID " + id + " deleted correctly"));
     }
 
     private User extractUser() {

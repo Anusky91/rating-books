@@ -20,6 +20,10 @@ Implantada a través de eventos de Spring y se persiste en la tabla ``audit_log`
 1. Test de integración de todos los controladores - JaCoCo > 0.80
 2. Test de carga con K6 🗻 [Documentación](test-k6/k6-docs.md) 
 
+## Observabilidad
+Prometheus
+Grafana - url [UI Web](http://localhost:3000/)
+ - Login - ``admin`` ,  ``Liqui2022*-`` 
 
 ## 🎨 Logo
 ![Logo de BookStar](src/main/resources/static/logo.png)

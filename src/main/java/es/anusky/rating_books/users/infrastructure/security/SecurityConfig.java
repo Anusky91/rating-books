@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/public/**", "/h2-console/**").permitAll()
                         .requestMatchers("/health", "/health/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/actuator/prometheus","/actuator/prometheus/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());
