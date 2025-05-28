@@ -1,12 +1,15 @@
 package es.anusky.rating_books.ratings.infrastructure.controller;
 
+import es.anusky.rating_books.cqrs.application.command.CommandBus;
+import es.anusky.rating_books.cqrs.application.query.QueryBus;
+import es.anusky.rating_books.cqrs.infrastructure.ApiController;
+import es.anusky.rating_books.ratings.application.getrating.GetUserRatingForBookQuery;
 import es.anusky.rating_books.infrastructure.exception.RatingNotFoundException;
 import es.anusky.rating_books.ratings.application.RatingService;
-import es.anusky.rating_books.ratings.domain.model.Rating;
+import es.anusky.rating_books.ratings.application.addrating.AddRatingCommand;
 import es.anusky.rating_books.shared.infrastructure.responses.RatingResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.*;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +19,18 @@ import java.util.List;
 @PreAuthorize("hasRole('USER')")
 @RestController
 @RequestMapping("/ratings")
-@RequiredArgsConstructor
-public class RatingController {
+public class RatingController extends ApiController {
     private final RatingService ratingService;
+
+    public RatingController(CommandBus commandBus, QueryBus queryBus, RatingService ratingService) {
+        super(commandBus, queryBus);
+        this.ratingService = ratingService;
+    }
 
     @PostMapping
     public RatingResponse save(@RequestBody CreateRatingRequest request) {
-        Rating created = ratingService.create(request.bookId(),
-                request.score(),
-                request.comment());
-        return RatingResponse.from(created);
+        dispatch(new AddRatingCommand(request.bookId(), request.score(), request.comment()));
+        return ask(new GetUserRatingForBookQuery(request.bookId()));
     }
 
     @GetMapping

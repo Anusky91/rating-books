@@ -3,7 +3,6 @@ package es.anusky.rating_books.ratings.application;
 import es.anusky.rating_books.books.domain.repository.BookRepository;
 import es.anusky.rating_books.infrastructure.exception.BookAlreadyRatedByUserException;
 import es.anusky.rating_books.infrastructure.exception.BookNotFoundException;
-import es.anusky.rating_books.infrastructure.exception.RatingNotFoundException;
 import es.anusky.rating_books.infrastructure.exception.UserNotFoundException;
 import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.ratings.domain.repository.RatingRepository;
@@ -39,12 +38,10 @@ public class RatingService {
     private final MeterRegistry meterRegistry;
 
     @Timed(value = "bookstar.rating.add.time", description = "Time taken to add a rating")
-    public Rating create(Long bookId, int score, String comment) {
+    public void create(Long bookId, int score, String comment) {
         meterRegistry.counter("bookstar.rating.add").increment();
         String alias = userProvider.getCurrentAlias();
-        User user = userRepository.findByAlias(alias).orElseThrow(
-                () -> new UserNotFoundException("User with alias " + alias + " not found")
-        );
+        User user = getUser(alias);
         if (checkUserHasAlreadyRatedABook(bookId, user.getUserId())) {
             throw new BookAlreadyRatedByUserException("Already exists a rating for this book");
         }
@@ -55,8 +52,16 @@ public class RatingService {
                 LocalDate.now());
 
         var saved = ratingRepository.save(rating);
-        publishEvent(saved, Actions.CREATE, alias);
-        return saved;
+        eventPublisher.publishEvent(buidlAuditEvent(saved, alias));
+    }
+
+    public Optional<Rating> findByUserIdAndBookId(Long bookId) {
+        String alias = userProvider.getCurrentAlias();
+        User user = getUser(alias);
+        return ratingRepository.findByUserId(user.getUserId().getValue())
+                .stream()
+                .filter(r -> r.getBookId().equals(bookId))
+                .findFirst();
     }
 
     public Optional<Rating> findById(Long id) {
@@ -74,15 +79,10 @@ public class RatingService {
         return ratingRepository.findByBookId(bookId);
     }
 
-    public Rating update(Long id, int score, String comment) {
-        String alias = userProvider.getCurrentAlias();
-        Optional<Rating> rating = ratingRepository.findById(id);
-        if (rating.isEmpty()){
-            throw new RatingNotFoundException("Rating with ID " + id + " not found");
-        }
-        var saved = ratingRepository.save(rating.get().update(score, comment));
-        publishEvent(saved, Actions.UPDATE, alias);
-        return saved;
+    private User getUser(String alias) {
+        return userRepository.findByAlias(alias).orElseThrow(
+                () -> new UserNotFoundException("User with alias " + alias + " not found")
+        );
     }
 
     private boolean checkUserHasAlreadyRatedABook(Long bookId, UserId userId) {
@@ -92,11 +92,7 @@ public class RatingService {
         return !ratings.isEmpty();
     }
 
-    private void publishEvent(Rating saved, Actions actions, String alias) {
-        eventPublisher.publishEvent(buidlAuditEvent(saved, actions, alias));
-    }
-
-    private AuditEvent buidlAuditEvent(Rating saved, Actions actions, String alias) {
-        return new AuditEvent(LocalDateTime.now(), Entities.RATING.name(), saved.getId().getValue(), actions.name(), alias, "Score: " + saved.getScore().getValue());
+    private AuditEvent buidlAuditEvent(Rating saved, String alias) {
+        return new AuditEvent(LocalDateTime.now(), Entities.RATING.name(), saved.getId().getValue(), Actions.CREATE.name(), alias, "Score: " + saved.getScore().getValue());
     }
 }
