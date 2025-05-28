@@ -36,6 +36,13 @@ public class SecurityConfig {
                         .requestMatchers("/public/**", "/h2-console/**").permitAll()
                         .requestMatchers("/health", "/health/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/v3/swagger-ui/**"
+                        ).permitAll()
                         .requestMatchers("/actuator/prometheus","/actuator/prometheus/**").permitAll()
                         .anyRequest().authenticated()
                 )

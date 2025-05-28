@@ -4,6 +4,7 @@ import es.anusky.rating_books.infrastructure.exception.UserNotFoundException;
 import es.anusky.rating_books.shared.infrastructure.responses.UserResponse;
 import es.anusky.rating_books.users.application.UserService;
 import es.anusky.rating_books.users.domain.model.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Users-Admin")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/admin/users")

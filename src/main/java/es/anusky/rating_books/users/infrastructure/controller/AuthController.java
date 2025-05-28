@@ -3,6 +3,7 @@ package es.anusky.rating_books.users.infrastructure.controller;
 import es.anusky.rating_books.infrastructure.exception.UserNotFoundException;
 import es.anusky.rating_books.users.application.UserService;
 import es.anusky.rating_books.users.domain.model.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Auth")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

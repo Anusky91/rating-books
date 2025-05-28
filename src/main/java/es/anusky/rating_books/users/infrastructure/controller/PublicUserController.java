@@ -3,6 +3,7 @@ package es.anusky.rating_books.users.infrastructure.controller;
 import es.anusky.rating_books.shared.infrastructure.responses.UserResponse;
 import es.anusky.rating_books.users.application.UserService;
 import es.anusky.rating_books.users.domain.model.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Users")
 @RestController
 @RequestMapping("/public/users")
 @RequiredArgsConstructor

@@ -4,12 +4,14 @@ import es.anusky.rating_books.books.application.BookService;
 import es.anusky.rating_books.books.application.search.SearchBookService;
 import es.anusky.rating_books.infrastructure.exception.BookNotFoundException;
 import es.anusky.rating_books.shared.infrastructure.responses.BookResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Books")
 @PreAuthorize("hasRole('USER')")
 @RestController
 @RequestMapping("/books")

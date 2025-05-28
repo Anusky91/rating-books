@@ -2,10 +2,12 @@ package es.anusky.rating_books.users.infrastructure.controller;
 
 import es.anusky.rating_books.shared.infrastructure.responses.ApiResponse;
 import es.anusky.rating_books.users.application.resetpassword.ResetPasswordService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Users-Password")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

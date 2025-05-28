@@ -26,6 +26,17 @@ Grafana - URL [UI Web](http://localhost:3000/)
  - Login - ``admin`` ,  ``Liqui2022*-`` 
 Loki (logs) - A través de Grafana
 
+## Swagger
+Con la implementación de la librería **org.springdoc**
+````
+    <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>2.8.6</version>
+    </dependency>
+````
+Podemos acceder a la documentación de la api en [API Doc](http://localhost:8080/bookstar/swagger-ui/index.html)
+
 ## 🎨 Logo
 ![Logo de BookStar](src/main/resources/static/logo.png)
 

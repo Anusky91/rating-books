@@ -4,6 +4,7 @@ import es.anusky.rating_books.infrastructure.exception.RatingNotFoundException;
 import es.anusky.rating_books.ratings.application.RatingService;
 import es.anusky.rating_books.ratings.domain.model.Rating;
 import es.anusky.rating_books.shared.infrastructure.responses.RatingResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Rating")
 @PreAuthorize("hasRole('USER')")
 @RestController
 @RequestMapping("/ratings")

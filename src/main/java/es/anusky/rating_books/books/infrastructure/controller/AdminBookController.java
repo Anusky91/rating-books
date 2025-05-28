@@ -3,6 +3,7 @@ package es.anusky.rating_books.books.infrastructure.controller;
 import es.anusky.rating_books.books.application.BookService;
 import es.anusky.rating_books.books.domain.model.Book;
 import es.anusky.rating_books.shared.infrastructure.responses.BookResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Books-Admin")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/admin/books")
