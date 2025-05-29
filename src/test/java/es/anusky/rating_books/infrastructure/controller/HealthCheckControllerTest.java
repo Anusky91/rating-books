@@ -21,4 +21,13 @@ class HealthCheckControllerTest extends IntegrationTestCase {
         assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"name\":\"BookStar\",\"status\":\"alive\"}");
     }
 
+    @Test
+    void test_health_check_exception() throws Exception {
+        MvcResult result = mockMvc.perform(get("/healt"))
+                .andExpect(status().is5xxServerError())
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"status\":\"500 INTERNAL_SERVER_ERROR\",\"error\":\"Ha ocurrido un error inesperado\"}");
+    }
+
 }

@@ -19,6 +19,15 @@ public class BookMother {
                 between(LocalDate.of(1800, 1,1), LocalDate.now()));
     }
 
+    public static Book randomWithId(Long id) {
+        return new Book(new BookId(id),
+                new Title(faker.book().title()),
+                new Author(faker.book().author()),
+                new Editorial(faker.book().publisher()),
+                IsbnMother.random(),
+                between(LocalDate.of(1800, 1,1), LocalDate.now()));
+    }
+
     private static LocalDate between(LocalDate startInclusive, LocalDate endExclusive) {
         long startEpochDay = startInclusive.toEpochDay();
         long endEpochDay = endExclusive.toEpochDay();
