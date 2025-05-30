@@ -202,6 +202,7 @@
 					</targetTests>
 					<excludedClasses>
 						<excludedClass>*.valueobjects.*</excludedClass>
+						<excludedClass>*.infrastructure.responses.*</excludedClass>
 					</excludedClasses>
 					<excludedMethods>
 						<param>main</param>

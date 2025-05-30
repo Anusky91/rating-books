@@ -23,6 +23,7 @@ Implantada a través de eventos de Spring y se persiste en la tabla ``audit_log`
 **Para ejecutar los test hay que arrancar primero el contenedor de MailHog**
 1. Test de integración de todos los controladores - JaCoCo > 0.80
 2. Test de carga con K6 🗻 [Documentación](test-k6/k6-docs.md) 
+3. Pi-Test configurado, >70% mutaciones matadas, comando para ejecutar los pitest  ``mvn org.pitest:pitest-maven:mutationCoverage``
 
 ## Observabilidad
 Prometheus - URL [UI Web](http://localhost:9090/query)  
