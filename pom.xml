@@ -115,6 +115,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>bookstar</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.jacoco</groupId>
