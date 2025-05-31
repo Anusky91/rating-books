@@ -1,4 +1,4 @@
-package es.anusky.rating_books.shared.domain.valueobjects;
+package es.anusky.rating_books.shared.domain.enums;
 
 public enum SupportedCountryCode {
     ES, FR, DE, IT, US, AR, MX, BR, CO, PT;

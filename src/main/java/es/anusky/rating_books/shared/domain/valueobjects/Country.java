@@ -1,5 +1,6 @@
 package es.anusky.rating_books.shared.domain.valueobjects;
 
+import es.anusky.rating_books.shared.domain.enums.SupportedCountryCode;
 import lombok.Getter;
 
 import java.io.Serializable;

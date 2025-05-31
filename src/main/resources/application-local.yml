@@ -1,5 +1,6 @@
 server:
-  port: ${PORT:8080}         # Render inyecta PORT, si no está usa 8080
+    port: 8080
+    address: 0.0.0.0
 spring:
   application:
     name: BookStar
@@ -7,15 +8,15 @@ spring:
     servlet:
       path: /bookstar
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bookstar}
-    username: ${SPRING_DATASOURCE_USERNAME:bookuser}
-    password: ${SPRING_DATASOURCE_PASSWORD:bookpass}
+    url: jdbc:postgresql://localhost:5432/bookstar
+    username: bookuser
+    password: bookpass
     driver-class-name: org.postgresql.Driver
   mail:
-    host: ${MAIL_HOST:sandbox.smtp.mailtrap.io}
-    port: ${MAIL_PORT:2525}
-    username: ${MAIL_USERNAME:b8a87ed6ed3563}
-    password: ${MAIL_PASSWORD:15b85ecad199f7}
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: b8a87ed6ed3563
+    password: 15b85ecad199f7
     properties:
       mail:
         smtp:
