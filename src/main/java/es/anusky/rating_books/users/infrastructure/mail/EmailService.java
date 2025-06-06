@@ -19,7 +19,7 @@ public class EmailService {
             
                 Para activar tu cuenta en BookStar, haz clic en el siguiente enlace:
             
-                👉 http://localhost:8080/bookstar/auth/activate?token=%s
+                👉 https://bookstar-uolc.onrender.com/bookstar/auth/activate?token=%s
             
                 Este enlace expirará en 24 horas.
             
@@ -43,7 +43,7 @@ public class EmailService {
             
                 Para restablecer tu contraseña en BookStar, haz clic en el siguiente enlace:
             
-                👉 http://localhost:8080/bookstar/auth/reset?token=%s
+                👉 https://bookstar-uolc.onrender.com/bookstar/auth/reset?token=%s
             
                 Este enlace expirará en 1 hora.
             
