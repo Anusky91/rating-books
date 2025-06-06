@@ -9,7 +9,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "books")
+@Table(
+    name = "books",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"title", "author"})
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +27,7 @@ public class BookEntity {
     private String title;
     private String author;
     private String editorial;
+    @Column(unique = true)
     private String isbn;
-    private LocalDate publicationDate;
+    private LocalDate publishingDate;
 }

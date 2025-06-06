@@ -20,12 +20,16 @@ public class BookStarUserDetails implements UserDetails {
         if (user.getRole() == Role.ADMIN) {
             return List.of(
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_USER") // ← ¡aquí está la clave!
+                    new SimpleGrantedAuthority("ROLE_USER")
             );
+        }
+        if (user.getRole() == Role.TECHNICAL) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_TECHNICAL"),
+                    new SimpleGrantedAuthority("ROLE_USER"));
         }
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
-
 
     @Override
     public String getPassword() {

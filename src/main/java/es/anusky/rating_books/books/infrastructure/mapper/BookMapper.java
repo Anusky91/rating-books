@@ -13,7 +13,7 @@ public class BookMapper {
                 .author(book.getAuthor().getValue())
                 .editorial(book.getEditorial().getValue())
                 .isbn(book.getIsbn().getValue())
-                .publicationDate(book.getPublicationDate())
+                .publishingDate(book.getPublicationDate())
                 .build();
     }
 
@@ -24,7 +24,7 @@ public class BookMapper {
                 new Author(entity.getAuthor()),
                 new Editorial(entity.getEditorial()),
                 new Isbn(entity.getIsbn()),
-                entity.getPublicationDate()
+                entity.getPublishingDate()
         );
     }
 
