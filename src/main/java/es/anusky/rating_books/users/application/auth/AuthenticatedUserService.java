@@ -6,10 +6,12 @@ import es.anusky.rating_books.shared.infrastructure.security.AuthenticatedUserPr
 import es.anusky.rating_books.users.domain.model.User;
 import es.anusky.rating_books.users.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticatedUserService {
 
     private final AuthenticatedUserProvider userProvider;
@@ -20,6 +22,8 @@ public class AuthenticatedUserService {
         User user = userRepository.findByAlias(alias).orElseThrow(
                 () -> new UserNotFoundException("User with alias " + alias + " not found")
         );
+
+        log.info("User with alias {} authenticated", alias);
 
         return UserAuthResponse.builder()
                 .id(user.getUserId().getValue())

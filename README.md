@@ -28,7 +28,8 @@ Implantada a través de eventos de Spring y se persiste en la tabla ``audit_log`
 ## Observabilidad
 Prometheus - URL [UI Web](http://localhost:9090/query)  
 Grafana - URL [UI Web](http://localhost:3000/)
- - Login - ``admin`` ,  ``Liqui2022*-`` 
+ - Login - ``admin`` ,  ``Liqui2022*-``     
+
 Loki (logs) - A través de Grafana
 
 ## Swagger
