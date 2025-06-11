@@ -1,4 +1,4 @@
-INSERT INTO books (title, author, editorial, isbn, publication_date) VALUES
+INSERT INTO books (title, author, editorial, isbn, publishing_date) VALUES
 ('El nombre del viento', 'Patrick Rothfuss', 'Plaza & Janés', '978-84-450-7755-9', '2009-06-01'),
 ('1984', 'George Orwell', 'Debolsillo', '978-84-9032-139-5', '1949-06-08'),
 ('Cien años de soledad', 'Gabriel García Márquez', 'Sudamericana', '978-84-376-0494-7', '1967-06-01'),
