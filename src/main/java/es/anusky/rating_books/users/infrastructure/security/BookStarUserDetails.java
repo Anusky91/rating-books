@@ -20,6 +20,7 @@ public class BookStarUserDetails implements UserDetails {
         if (user.getRole() == Role.ADMIN) {
             return List.of(
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_TECHNICAL"),
                     new SimpleGrantedAuthority("ROLE_USER")
             );
         }
